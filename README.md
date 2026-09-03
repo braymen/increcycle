@@ -4,7 +4,7 @@
 
 - Scripts for the framework
 - Scripts for the game
-- Balancing Configs
+- Balancing Config
 - Images
 - UI components
 - UI pages
