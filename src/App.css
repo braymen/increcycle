@@ -1,0 +1,38 @@
+html,
+body {
+    color: #60e075;
+    background-color: #081608;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    padding: 4px;
+    margin: 0;
+}
+
+p {
+    padding: 4px 0;
+    margin: 0;
+}
+
+.primary-button {
+    background-color: #0f5414;
+    color: #60e075;
+    border-color: #022e05;
+    padding: 4px 24px;
+}
+
+.primary-button:hover {
+    border-color: #05510a;
+    cursor: pointer;
+}
+
+.primary-button:disabled,
+.primary-button[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
