@@ -1,41 +1,82 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import ShopItem from './ShopItem'
 
 function App() {
-    const [garbage, setGarbage] = useState(0)
-    const [grabber, setGrabber] = useState(0)
+    const [cans, setCans] = useState(0)
+    const [helpers, setHelpers] = useState(0)
+    const [money, setMoney] = useState(0)
 
     useEffect(() => {
         const id = setInterval(() => {
-            setGarbage((g) => g + grabber)
+            setCans((g) => g + helpers)
         }, 1000)
         return () => clearInterval(id)
-    }, [grabber])
+    }, [helpers, cans, money])
 
     const costFormula = (currentLevel: number) => {
-        return currentLevel * 10 + 10
+        return currentLevel * 10 + 1
     }
 
     return (
         <>
-            <h1>Environmental</h1>
-            <p>Garbage: {garbage}</p>
-            <p>Grabbers: {grabber}</p>
-            <button className="primary-button" onClick={() => setGarbage(garbage + 1)}>
-                Pick up garbage
-            </button>
-            <br />
-            <p>Grabber Cost: {costFormula(grabber)}</p>
-            <button
-                disabled={garbage < costFormula(grabber)}
-                className="primary-button"
-                onClick={() => {
-                    setGarbage(garbage - costFormula(grabber))
-                    setGrabber(grabber + 1)
-                }}
-            >
-                Buy auto-grabber
-            </button>
+            <h1>
+                Environ<span style={{ color: 'white' }}>mental</span>
+            </h1>
+            <div className="panel">
+                <h2>Resources</h2>
+                <p>Money: ${money.toFixed(2)}</p>
+                <p>Cans on ground: {cans}</p>
+                <p>
+                    Cans Bagged: {cans}
+                    <span style={{ float: 'right' }}>
+                        0/5 bag filled <span className="help-marker">(?)</span>
+                    </span>
+                </p>
+                <p>Plastic Bags: 0</p>
+            </div>
+            <div className="panel">
+                <h2>Actions</h2>
+                <div className="action-grid">
+                    <button className="primary-button" onClick={() => setCans(cans + 1)}>
+                        Pick up cans
+                    </button>
+                    <button
+                        className="primary-button"
+                        onClick={() => {
+                            setMoney(money + cans * 0.01)
+                            setCans(0)
+                        }}
+                    >
+                        Recycle for money
+                    </button>
+                </div>
+            </div>
+            <div className="panel">
+                <h2>Shop</h2>
+                <ShopItem
+                    title="Travel to new Location"
+                    price={100}
+                    callback={() => {
+                        console.log('ok')
+                    }}
+                />
+                <ShopItem
+                    title="Plastic Bags"
+                    price={100}
+                    callback={() => {
+                        console.log('ok')
+                    }}
+                />{' '}
+                <ShopItem
+                    title="Rusty Grabber"
+                    price={100}
+                    level={helpers}
+                    callback={() => {
+                        console.log('ok')
+                    }}
+                />
+            </div>
         </>
     )
 }

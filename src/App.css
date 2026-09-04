@@ -12,6 +12,8 @@ h1 {
 h2 {
     padding: 4px;
     margin: 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #60e075;
 }
 
 p {
@@ -35,4 +37,29 @@ p {
 .primary-button[disabled] {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+.panel {
+    width: 360px;
+    margin-top: 8px;
+}
+
+.help-marker {
+    opacity: 0.6;
+}
+
+.help-marker:hover {
+    cursor: help;
+    opacity: 0.9;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.action-grid > .primary-button {
+    box-sizing: border-box;
+    padding: 4px 8px;
 }
