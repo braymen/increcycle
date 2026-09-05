@@ -4,45 +4,64 @@ import ShopItem from './ShopItem'
 
 function App() {
     const [cans, setCans] = useState(0)
-    const [helpers, setHelpers] = useState(0)
+    const [grabberLevel, setGrabberLevel] = useState(0)
     const [money, setMoney] = useState(0)
+    const [bags, setBags] = useState(1)
+    const [bagStorage, setBagStorage] = useState(0)
 
     useEffect(() => {
         const id = setInterval(() => {
-            setCans((g) => g + helpers)
+            addCan(grabberLevel)
         }, 1000)
         return () => clearInterval(id)
-    }, [helpers, cans, money])
+    }, [grabberLevel, cans, money])
 
     const costFormula = (currentLevel: number) => {
-        return currentLevel * 10 + 1
+        return 0.1 * Math.pow(currentLevel + 1, 3)
     }
+
+    const addCan = (amount: number) => {
+        // TODO: need to fix plastic bag math when multiple rust grabbers
+        if (bags <= 0) return
+        if (bagStorage + amount >= maxBagStorage) {
+            setBagStorage(0)
+            setBags(bags - amount)
+        } else {
+            setBagStorage(bagStorage + amount)
+        }
+        setCans(cans + amount)
+    }
+
+    const maxBagStorage = 5
 
     return (
         <>
             <h1>
-                Environ<span style={{ color: 'white' }}>mental</span>
+                <span style={{ color: 'white' }}>Inc</span>recycle
             </h1>
             <div className="panel">
                 <h2>Resources</h2>
                 <p>Money: ${money.toFixed(2)}</p>
-                <p>Cans on ground: {cans}</p>
+                <p>Cans: {cans}</p>
                 <p>
-                    Cans Bagged: {cans}
+                    <span style={{ color: bags <= 0 ? 'red' : 'inherit' }}>Plastic Bags: {bags}</span>
                     <span style={{ float: 'right' }}>
-                        0/5 bag filled <span className="help-marker">(?)</span>
+                        {bagStorage}/{maxBagStorage} bag filled{' '}
+                        <span className="help-marker" data-tooltip="As you pick up cans, you use up a bag.">
+                            (?)
+                        </span>
                     </span>
                 </p>
-                <p>Plastic Bags: 0</p>
             </div>
             <div className="panel">
                 <h2>Actions</h2>
                 <div className="action-grid">
-                    <button className="primary-button" onClick={() => setCans(cans + 1)}>
+                    <button disabled={bags <= 0} className="primary-button" onClick={() => addCan(1)}>
                         Pick up cans
                     </button>
                     <button
                         className="primary-button"
+                        disabled={cans <= 0}
                         onClick={() => {
                             setMoney(money + cans * 0.01)
                             setCans(0)
@@ -55,25 +74,23 @@ function App() {
             <div className="panel">
                 <h2>Shop</h2>
                 <ShopItem
-                    title="Travel to new Location"
-                    price={100}
-                    callback={() => {
-                        console.log('ok')
-                    }}
-                />
-                <ShopItem
                     title="Plastic Bags"
-                    price={100}
+                    price={0.01}
+                    currentCurrency={money}
                     callback={() => {
-                        console.log('ok')
+                        setBags(bags + 1)
+                        setMoney(money - 0.01)
                     }}
                 />{' '}
                 <ShopItem
-                    title="Rusty Grabber"
-                    price={100}
-                    level={helpers}
+                    title="Hire a Volunteer"
+                    description="Helps pick up cans, once per second each."
+                    price={costFormula(grabberLevel)}
+                    level={grabberLevel}
+                    currentCurrency={money}
                     callback={() => {
-                        console.log('ok')
+                        setGrabberLevel(grabberLevel + 1)
+                        setMoney(money - 0.1)
                     }}
                 />
             </div>
