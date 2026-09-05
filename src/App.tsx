@@ -9,6 +9,8 @@ function App() {
     const [bags, setBags] = useState(1)
     const [bagStorage, setBagStorage] = useState(0)
 
+    const maxBagStorage = 5
+
     useEffect(() => {
         const id = setInterval(() => {
             addCan(grabberLevel)
@@ -21,18 +23,18 @@ function App() {
     }
 
     const addCan = (amount: number) => {
-        // TODO: need to fix plastic bag math when multiple rust grabbers
-        if (bags <= 0) return
-        if (bagStorage + amount >= maxBagStorage) {
-            setBagStorage(0)
-            setBags(bags - amount)
-        } else {
-            setBagStorage(bagStorage + amount)
-        }
-        setCans(cans + amount)
-    }
+        if (bags <= 0 || amount == 0) return
 
-    const maxBagStorage = 5
+        // There has to be a cleaner way to do this lol
+        const offset = bagStorage
+        const maxCans = bags * maxBagStorage - offset
+        const correctedCans = Math.min(maxCans, amount)
+        const remainder = (correctedCans + bagStorage) % maxBagStorage
+        const bagsConsumed = Math.floor((correctedCans + bagStorage) / maxBagStorage)
+        setBagStorage(remainder)
+        setBags(bags - bagsConsumed)
+        setCans(cans + correctedCans)
+    }
 
     return (
         <>
@@ -63,11 +65,14 @@ function App() {
                         className="primary-button"
                         disabled={cans <= 0}
                         onClick={() => {
-                            setMoney(money + cans * 0.01)
+                            setMoney(Math.round((money + cans * 0.01) * 100) / 100)
                             setCans(0)
                         }}
                     >
                         Recycle for money
+                    </button>
+                    <button className="primary-button" onClick={() => setMoney(10000000000)}>
+                        Give lots money
                     </button>
                 </div>
             </div>
@@ -90,7 +95,7 @@ function App() {
                     currentCurrency={money}
                     callback={() => {
                         setGrabberLevel(grabberLevel + 1)
-                        setMoney(money - 0.1)
+                        setMoney(money - costFormula(grabberLevel))
                     }}
                 />
             </div>

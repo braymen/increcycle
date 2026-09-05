@@ -28,7 +28,11 @@ export const ShopItem = (props: ShopItemProps) => {
                 </span>
                 <span style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     {props.level != null ? <span>Level {props.level}</span> : <></>}
-                    <button className="primary-button" disabled={props.currentCurrency < props.price} onClick={props.callback}>
+                    <button
+                        className="primary-button"
+                        disabled={Math.round(props.currentCurrency * 100) / 100 < props.price}
+                        onClick={props.callback}
+                    >
                         Buy
                     </button>
                 </span>
