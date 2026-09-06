@@ -8,8 +8,9 @@ export interface GameState {
         cans: number
         bags: number
     }
-    generators: {
-        cans: number
+    levels: {
+        volunteers: number
+        bagCapacity: number
     }
 }
 
@@ -19,12 +20,13 @@ export const initialState = (): GameState => {
         lastTick: 0,
         lastSave: 0,
         resources: {
-            money: 0,
-            cans: 0,
-            bags: 0,
+            money: -1,
+            cans: -1,
+            bags: 1,
         },
-        generators: {
-            cans: 0,
+        levels: {
+            volunteers: 0,
+            bagCapacity: 0,
         },
     }
 }
@@ -32,11 +34,15 @@ export const initialState = (): GameState => {
 // Action Types
 export const GameActionKeys = {
     CHANGE_CANS: 'CHANGE_CANS',
+    CHANGE_BAGS: 'CHANGE_BAGS',
+    CHANGE_MONEY: 'CHANGE_MONEY',
 } as const
 
 // Action Payloads
 type GameActionPayloads = {
     [GameActionKeys.CHANGE_CANS]: { amount: number }
+    [GameActionKeys.CHANGE_BAGS]: { amount: number }
+    [GameActionKeys.CHANGE_MONEY]: { amount: number }
 }
 
 // Action Typing
@@ -50,11 +56,31 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
     const { type, payload } = action
     switch (type) {
         case GameActionKeys.CHANGE_CANS: {
+            if (state.resources.cans < 0) state.resources.cans = 0 // This is for the scaffolding logic
             return {
                 ...state,
                 resources: {
                     ...state.resources,
                     cans: Math.max(0, state.resources.cans + payload.amount),
+                },
+            }
+        }
+        case GameActionKeys.CHANGE_BAGS: {
+            return {
+                ...state,
+                resources: {
+                    ...state.resources,
+                    bags: Math.max(0, state.resources.bags + payload.amount),
+                },
+            }
+        }
+        case GameActionKeys.CHANGE_MONEY: {
+            const adjustedMoney = state.resources.money < 0 ? 1 : 0
+            return {
+                ...state,
+                resources: {
+                    ...state.resources,
+                    money: Math.round(Math.max(0, state.resources.money + payload.amount + adjustedMoney) * 100) / 100,
                 },
             }
         }
