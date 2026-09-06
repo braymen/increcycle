@@ -38,9 +38,7 @@ function App() {
 
     return (
         <>
-            <h1>
-                <span style={{ color: 'white' }}>Inc</span>recycle
-            </h1>
+            <h1>Increcycle</h1>
             <div className="panel">
                 <h2>Resources</h2>
                 <p>Money: ${money.toFixed(2)}</p>

@@ -29,21 +29,19 @@ const initialState = (): GameState => {
 }
 
 const storageKey = 'save'
-
 const getLocalStorageKey = (slot: number) => {
     return storageKey + '-' + slot
 }
 
-const loadLocalStorage = (slot: number): GameState | null => {
-    return localStorage.getItem(getLocalStorageKey(slot))
+const load = (slot: number): GameState => {
+    const jsonString = localStorage.getItem(getLocalStorageKey(slot))
+    return jsonString ? JSON.parse(jsonString) : initialState()
 }
 
-const saveLocalStorage = (slot: number, state: GameState) => {}
+const save = (slot: number, state: GameState) => {
+    localStorage.setItem(getLocalStorageKey(slot), JSON.stringify(state))
+}
 
-const resetLocalStorage = (slot: number) => {
+const reset = (slot: number) => {
     localStorage.removeItem(getLocalStorageKey(slot))
-}
-
-const loadGame = (slot: number): GameState => {
-    return loadLocalStorage(slot) || initialState()
 }
