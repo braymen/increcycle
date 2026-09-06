@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import '../styles/App.css'
-import ShopItem from './ShopItem'
+import ShopItem from '../components/ShopItem'
+import { useGameDispatch, useGameState } from '../state/GameContext'
 
 function App() {
+    const state = useGameState()
+    const dispatch = useGameDispatch()
+
     const [cans, setCans] = useState(0)
     const [grabberLevel, setGrabberLevel] = useState(0)
     const [money, setMoney] = useState(0)

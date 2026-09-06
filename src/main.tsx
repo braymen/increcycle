@@ -1,4 +1,9 @@
 import { createRoot } from 'react-dom/client'
-import App from './views/App.tsx'
+import App from './ui/views/App.tsx'
+import { GameProvider } from './ui/state/GameProvider.tsx'
 
-createRoot(document.getElementById('root')!).render(<App />)
+createRoot(document.getElementById('root')!).render(
+    <GameProvider>
+        <App />
+    </GameProvider>
+)
