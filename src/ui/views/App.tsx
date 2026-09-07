@@ -12,17 +12,8 @@ function App() {
 
     return (
         <>
-            <div
-                style={{
-                    backgroundColor: '#091d09',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '8px 16px',
-                    border: 'dashed 2px #ffffff3b',
-                }}
-            >
-                <span style={{ fontSize: '24px', fontWeight: '800', color: '#ddfee2' }}>
+            <div className="app-header">
+                <span className="app-title">
                     Inc<span style={{ color: '#60e075' }}>recycle</span>
                 </span>
                 {playerCount !== null ? (
@@ -38,144 +29,150 @@ function App() {
                     </span>
                 ) : null}
             </div>
-            <h1 style={{ margin: 0, padding: 0, marginTop: '16px', color: '#ddfee2' }}>
-                Money: ${state.resources.money.toFixed(2)}
-            </h1>
-            <div className="panel" style={{ marginTop: 0 }}>
-                <h2>Resources</h2>
-                <p>
-                    <span>Plastic Bags: {state.resources.bags}</span>
-                    <span style={{ float: 'right' }}>
-                        {state.resources.bagStorage}/{bagCapacity} bag filled{' '}
-                        <span
-                            className="help-marker"
-                            data-tooltip="As you pick up cans, you use up a bag."
-                            data-tooltip-align="left"
-                        >
-                            (?)
-                        </span>
-                    </span>
-                </p>
-                {state.resources.cans >= 0 ? (
-                    <p>
-                        <span>Cans: {state.resources.cans}</span>
-                        {cansPerSecond > 0 ? (
+            <div className="columns">
+                <div className="column">
+                    <h1 style={{ margin: 0, padding: 0, marginTop: '16px', color: '#ddfee2' }}>
+                        Money: ${state.resources.money.toFixed(2)}
+                    </h1>
+                    <div className="panel" style={{ marginTop: 0 }}>
+                        <h2>Resources</h2>
+                        <p>
+                            <span>Plastic Bags: {state.resources.bags}</span>
                             <span style={{ float: 'right' }}>
-                                +{cansPerSecond}/sec{' '}
+                                {state.resources.bagStorage}/{bagCapacity} bag filled{' '}
                                 <span
                                     className="help-marker"
-                                    data-tooltip="Volunteers are helping you pick up cans for you."
+                                    data-tooltip="As you pick up cans, you use up a bag."
                                     data-tooltip-align="left"
                                 >
                                     (?)
                                 </span>
                             </span>
-                        ) : null}
-                    </p>
-                ) : (
-                    <></>
-                )}
-            </div>
-            <div className="panel">
-                <h2>Actions</h2>
-                <div className="action-grid">
-                    <button
-                        disabled={state.resources.bags <= 0}
-                        className="primary-button"
-                        onClick={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: 1 } })}
-                    >
-                        Pick up cans
-                    </button>
-                    <button
-                        className="primary-button"
-                        disabled={state.resources.cans <= 0}
-                        onClick={() => {
-                            dispatch({
-                                type: 'CHANGE_MONEY',
-                                payload: {
-                                    amount: state.resources.cans * CONFIGS.BASE_CAN_SELL_PRICE,
-                                },
-                            })
-                            dispatch({ type: 'CHANGE_CANS', payload: { amount: -state.resources.cans } })
-                        }}
-                    >
-                        Recycle cans for money
-                    </button>
-                    {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
-                        <button
-                            className="primary-button"
-                            onClick={() => dispatch({ type: 'CHANGE_BAGS', payload: { amount: 1 } })}
-                        >
-                            Scavenge for a Free Bag
-                        </button>
-                    ) : (
-                        <></>
-                    )}
+                        </p>
+                        {state.resources.cans >= 0 ? (
+                            <p>
+                                <span>Cans: {state.resources.cans}</span>
+                                {cansPerSecond > 0 ? (
+                                    <span style={{ float: 'right' }}>
+                                        +{cansPerSecond}/sec{' '}
+                                        <span
+                                            className="help-marker"
+                                            data-tooltip="Volunteers are helping you pick up cans for you."
+                                            data-tooltip-align="left"
+                                        >
+                                            (?)
+                                        </span>
+                                    </span>
+                                ) : null}
+                            </p>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                    <div className="panel">
+                        <h2>Actions</h2>
+                        <div className="action-grid">
+                            <button
+                                disabled={state.resources.bags <= 0}
+                                className="primary-button"
+                                onClick={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: 1 } })}
+                            >
+                                Pick up cans
+                            </button>
+                            <button
+                                className="primary-button"
+                                disabled={state.resources.cans <= 0}
+                                onClick={() => {
+                                    dispatch({
+                                        type: 'CHANGE_MONEY',
+                                        payload: {
+                                            amount: state.resources.cans * CONFIGS.BASE_CAN_SELL_PRICE,
+                                        },
+                                    })
+                                    dispatch({ type: 'CHANGE_CANS', payload: { amount: -state.resources.cans } })
+                                }}
+                            >
+                                Recycle cans for money
+                            </button>
+                            {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
+                                <button
+                                    className="primary-button"
+                                    onClick={() => dispatch({ type: 'CHANGE_BAGS', payload: { amount: 1 } })}
+                                >
+                                    Scavenge for a Free Bag
+                                </button>
+                            ) : (
+                                <></>
+                            )}
+                        </div>
+                    </div>
+                    <div className="panel">
+                        <h2>Shop</h2>
+                        <ShopItem
+                            title="Plastic Bags"
+                            price={bagCost}
+                            currentCurrency={state.resources.money}
+                            callback={() => {
+                                dispatch({
+                                    type: 'CHANGE_BAGS',
+                                    payload: {
+                                        amount: 1,
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_MONEY',
+                                    payload: {
+                                        amount: -bagCost,
+                                    },
+                                })
+                            }}
+                        />
+                        <ShopItem
+                            title="Hire a Volunteer"
+                            description="Helps pick up cans, once per second each."
+                            price={volunterCost}
+                            level={state.levels.volunteers}
+                            currentCurrency={state.resources.money}
+                            callback={() => {
+                                dispatch({
+                                    type: 'CHANGE_VOLUNTEERS',
+                                    payload: {
+                                        amount: 1,
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_MONEY',
+                                    payload: {
+                                        amount: -volunterCost,
+                                    },
+                                })
+                            }}
+                        />
+                        <ShopItem
+                            title="Bigger Bags"
+                            description="Increase bag capacity by +1"
+                            price={bagCapacityCost}
+                            level={state.levels.bagCapacity}
+                            currentCurrency={state.resources.money}
+                            callback={() => {
+                                dispatch({
+                                    type: 'CHANGE_BAG_CAPACITY',
+                                    payload: {
+                                        amount: 1,
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_MONEY',
+                                    payload: {
+                                        amount: -volunterCost,
+                                    },
+                                })
+                            }}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="panel">
-                <h2>Shop</h2>
-                <ShopItem
-                    title="Plastic Bags"
-                    price={bagCost}
-                    currentCurrency={state.resources.money}
-                    callback={() => {
-                        dispatch({
-                            type: 'CHANGE_BAGS',
-                            payload: {
-                                amount: 1,
-                            },
-                        })
-                        dispatch({
-                            type: 'CHANGE_MONEY',
-                            payload: {
-                                amount: -bagCost,
-                            },
-                        })
-                    }}
-                />
-                <ShopItem
-                    title="Hire a Volunteer"
-                    description="Helps pick up cans, once per second each."
-                    price={volunterCost}
-                    level={state.levels.volunteers}
-                    currentCurrency={state.resources.money}
-                    callback={() => {
-                        dispatch({
-                            type: 'CHANGE_VOLUNTEERS',
-                            payload: {
-                                amount: 1,
-                            },
-                        })
-                        dispatch({
-                            type: 'CHANGE_MONEY',
-                            payload: {
-                                amount: -volunterCost,
-                            },
-                        })
-                    }}
-                />
-                <ShopItem
-                    title="Bigger Bags"
-                    description="Increase bag capacity by +1"
-                    price={bagCapacityCost}
-                    level={state.levels.bagCapacity}
-                    currentCurrency={state.resources.money}
-                    callback={() => {
-                        dispatch({
-                            type: 'CHANGE_BAG_CAPACITY',
-                            payload: {
-                                amount: 1,
-                            },
-                        })
-                        dispatch({
-                            type: 'CHANGE_MONEY',
-                            payload: {
-                                amount: -volunterCost,
-                            },
-                        })
-                    }}
-                />
+                <div className="column"></div>
+                <div className="column"></div>
             </div>
         </>
     )
