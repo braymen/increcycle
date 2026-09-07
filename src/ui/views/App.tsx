@@ -6,7 +6,7 @@ import { CONFIGS } from '../../scripts/configs'
 
 function App() {
     const state = useGameState()
-    const { bagCapacity } = useGameDerived()
+    const { bagCapacity, volunterCost, cansPerSecond } = useGameDerived()
     const dispatch = useGameDispatch()
     const playerCount = PlayerCount()
 
@@ -56,7 +56,25 @@ function App() {
                         </span>
                     </span>
                 </p>
-                {state.resources.cans >= 0 ? <p>Cans: {state.resources.cans}</p> : <></>}
+                {state.resources.cans >= 0 ? (
+                    <p>
+                        <span>Cans: {state.resources.cans}</span>
+                        {cansPerSecond > 0 ? (
+                            <span style={{ float: 'right' }}>
+                                +{cansPerSecond}/sec{' '}
+                                <span
+                                    className="help-marker"
+                                    data-tooltip="Volunteers are helping you pick up cans for you."
+                                    data-tooltip-align="left"
+                                >
+                                    (?)
+                                </span>
+                            </span>
+                        ) : null}
+                    </p>
+                ) : (
+                    <></>
+                )}
             </div>
             <div className="panel">
                 <h2>Actions</h2>
@@ -83,6 +101,16 @@ function App() {
                     >
                         Recycle for money
                     </button>
+                    {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
+                        <button
+                            className="primary-button"
+                            onClick={() => dispatch({ type: 'CHANGE_BAGS', payload: { amount: 1 } })}
+                        >
+                            Scavenge for a Free Bag
+                        </button>
+                    ) : (
+                        <></>
+                    )}
                 </div>
             </div>
             <div className="panel">
@@ -102,6 +130,27 @@ function App() {
                             type: 'CHANGE_MONEY',
                             payload: {
                                 amount: -CONFIGS.BASE_BAG_BUY_COST,
+                            },
+                        })
+                    }}
+                />
+                <ShopItem
+                    title="Hire a Volunteer"
+                    description="Helps pick up cans, once per second each."
+                    price={volunterCost}
+                    level={state.levels.volunteers}
+                    currentCurrency={state.resources.money}
+                    callback={() => {
+                        dispatch({
+                            type: 'CHANGE_VOLUNTEERS',
+                            payload: {
+                                amount: 1,
+                            },
+                        })
+                        dispatch({
+                            type: 'CHANGE_MONEY',
+                            payload: {
+                                amount: -volunterCost,
                             },
                         })
                     }}

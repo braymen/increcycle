@@ -1,4 +1,6 @@
+import { CONFIGS } from './configs'
 import { calculateDerived } from './formula'
+import { changeCans } from './reducer-actions/change-cans'
 
 // Setting up Game State
 export interface GameState {
@@ -37,16 +39,20 @@ export const initialState = (): GameState => {
 
 // Action Types
 export const GameActionKeys = {
+    TICK: 'TICK',
     CHANGE_CANS: 'CHANGE_CANS',
     CHANGE_BAGS: 'CHANGE_BAGS',
     CHANGE_MONEY: 'CHANGE_MONEY',
+    CHANGE_VOLUNTEERS: 'CHANGE_VOLUNTEERS',
 } as const
 
 // Action Payloads
 type GameActionPayloads = {
+    [GameActionKeys.TICK]: { now: number }
     [GameActionKeys.CHANGE_CANS]: { amount: number }
     [GameActionKeys.CHANGE_BAGS]: { amount: number }
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
+    [GameActionKeys.CHANGE_VOLUNTEERS]: { amount: number }
 }
 
 // Action Typing
@@ -55,38 +61,27 @@ export type GameActions = {
     [K in GameActionKeysType]: { type: K; payload: GameActionPayloads[K] }
 }[GameActionKeysType]
 
-// Actual Logic
 export const reducer = (state: GameState, action: GameActions): GameState => {
     const { type, payload } = action
     switch (type) {
+        case GameActionKeys.TICK: {
+            // Tick Math
+            const { now } = payload
+            if (state.lastTick === 0 || now < state.lastTick) return { ...state, lastTick: now }
+
+            const ticks = Math.floor((now - state.lastTick) / CONFIGS.TICK_INTERVAL_MS)
+            if (ticks <= 0) return state
+
+            const lastTick = state.lastTick + ticks * CONFIGS.TICK_INTERVAL_MS
+
+            // Actual Game Stuff
+            const { cansPerSecond } = calculateDerived(state)
+            const collected = cansPerSecond * ((ticks * CONFIGS.TICK_INTERVAL_MS) / 1000)
+
+            return { ...changeCans(state, collected), lastTick }
+        }
         case GameActionKeys.CHANGE_CANS: {
-            if (state.resources.cans < 0) state.resources.cans = 0 // This is for the scaffolding logic
-            if (payload.amount <= 0) {
-                return {
-                    ...state,
-                    resources: {
-                        ...state.resources,
-                        cans: Math.max(0, state.resources.cans + payload.amount),
-                    },
-                }
-            }
-
-            const { bags, bagStorage } = state.resources
-            if (bags <= 0) return state
-            const { bagCapacity } = calculateDerived(state)
-            const openSpace = bags * bagCapacity - bagStorage
-            const addedCans = Math.min(openSpace, payload.amount)
-            const filled = bagStorage + addedCans
-
-            return {
-                ...state,
-                resources: {
-                    ...state.resources,
-                    cans: state.resources.cans + addedCans,
-                    bags: bags - Math.floor(filled / bagCapacity),
-                    bagStorage: filled % bagCapacity,
-                },
-            }
+            return changeCans(state, payload.amount)
         }
         case GameActionKeys.CHANGE_BAGS: {
             return {
@@ -103,6 +98,15 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 resources: {
                     ...state.resources,
                     money: Math.round(Math.max(0, state.resources.money + payload.amount) * 100) / 100,
+                },
+            }
+        }
+        case GameActionKeys.CHANGE_VOLUNTEERS: {
+            return {
+                ...state,
+                levels: {
+                    ...state.levels,
+                    volunteers: Math.max(0, state.levels.volunteers + payload.amount),
                 },
             }
         }
