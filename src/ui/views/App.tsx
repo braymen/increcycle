@@ -6,7 +6,7 @@ import { CONFIGS } from '../../scripts/configs'
 
 function App() {
     const state = useGameState()
-    const { bagCapacity, volunterCost, cansPerSecond } = useGameDerived()
+    const { bagCapacity, volunterCost, cansPerSecond, bagCapacityCost, bagCost } = useGameDerived()
     const dispatch = useGameDispatch()
     const playerCount = PlayerCount()
 
@@ -99,7 +99,7 @@ function App() {
                             dispatch({ type: 'CHANGE_CANS', payload: { amount: -state.resources.cans } })
                         }}
                     >
-                        Recycle for money
+                        Recycle cans for money
                     </button>
                     {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
                         <button
@@ -117,7 +117,7 @@ function App() {
                 <h2>Shop</h2>
                 <ShopItem
                     title="Plastic Bags"
-                    price={0.01}
+                    price={bagCost}
                     currentCurrency={state.resources.money}
                     callback={() => {
                         dispatch({
@@ -129,7 +129,7 @@ function App() {
                         dispatch({
                             type: 'CHANGE_MONEY',
                             payload: {
-                                amount: -CONFIGS.BASE_BAG_BUY_COST,
+                                amount: -bagCost,
                             },
                         })
                     }}
@@ -143,6 +143,27 @@ function App() {
                     callback={() => {
                         dispatch({
                             type: 'CHANGE_VOLUNTEERS',
+                            payload: {
+                                amount: 1,
+                            },
+                        })
+                        dispatch({
+                            type: 'CHANGE_MONEY',
+                            payload: {
+                                amount: -volunterCost,
+                            },
+                        })
+                    }}
+                />
+                <ShopItem
+                    title="Bigger Bags"
+                    description="Increase bag capacity by +1"
+                    price={bagCapacityCost}
+                    level={state.levels.bagCapacity}
+                    currentCurrency={state.resources.money}
+                    callback={() => {
+                        dispatch({
+                            type: 'CHANGE_BAG_CAPACITY',
                             payload: {
                                 amount: 1,
                             },

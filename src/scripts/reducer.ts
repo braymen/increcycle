@@ -44,6 +44,7 @@ export const GameActionKeys = {
     CHANGE_BAGS: 'CHANGE_BAGS',
     CHANGE_MONEY: 'CHANGE_MONEY',
     CHANGE_VOLUNTEERS: 'CHANGE_VOLUNTEERS',
+    CHANGE_BAG_CAPACITY: 'CHANGE_BAG_CAPACITY',
 } as const
 
 // Action Payloads
@@ -53,6 +54,7 @@ type GameActionPayloads = {
     [GameActionKeys.CHANGE_BAGS]: { amount: number }
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
     [GameActionKeys.CHANGE_VOLUNTEERS]: { amount: number }
+    [GameActionKeys.CHANGE_BAG_CAPACITY]: { amount: number }
 }
 
 // Action Typing
@@ -107,6 +109,15 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 levels: {
                     ...state.levels,
                     volunteers: Math.max(0, state.levels.volunteers + payload.amount),
+                },
+            }
+        }
+        case GameActionKeys.CHANGE_BAG_CAPACITY: {
+            return {
+                ...state,
+                levels: {
+                    ...state.levels,
+                    bagCapacity: Math.max(0, state.levels.bagCapacity + payload.amount),
                 },
             }
         }
