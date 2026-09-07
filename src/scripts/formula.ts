@@ -1,3 +1,4 @@
+import { CONFIGS } from './configs'
 import type { GameState } from './reducer'
 
 export interface GameDerived {
@@ -5,5 +6,5 @@ export interface GameDerived {
 }
 
 export const calculateDerived = (state: GameState): GameDerived => ({
-    bagCapacity: 5 + state.levels.bagCapacity,
+    bagCapacity: CONFIGS.BASE_BAG_CAPACITY + state.levels.bagCapacity,
 })

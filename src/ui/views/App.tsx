@@ -1,6 +1,8 @@
 import '../styles/App.css'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { PlayerCount } from '../state/PlayerCount'
+import ShopItem from '../components/ShopItem'
+import { CONFIGS } from '../../scripts/configs'
 
 function App() {
     const state = useGameState()
@@ -62,7 +64,7 @@ function App() {
                             dispatch({
                                 type: 'CHANGE_MONEY',
                                 payload: {
-                                    amount: state.resources.cans * 0.01,
+                                    amount: state.resources.cans * CONFIGS.BASE_CAN_SELL_PRICE,
                                 },
                             })
                             dispatch({ type: 'CHANGE_CANS', payload: { amount: -state.resources.cans } })
@@ -71,6 +73,28 @@ function App() {
                         Recycle for money
                     </button>
                 </div>
+            </div>
+            <div className="panel">
+                <h2>Shop</h2>
+                <ShopItem
+                    title="Plastic Bags"
+                    price={0.01}
+                    currentCurrency={state.resources.money}
+                    callback={() => {
+                        dispatch({
+                            type: 'CHANGE_BAGS',
+                            payload: {
+                                amount: 1,
+                            },
+                        })
+                        dispatch({
+                            type: 'CHANGE_MONEY',
+                            payload: {
+                                amount: -CONFIGS.BASE_BAG_BUY_COST,
+                            },
+                        })
+                    }}
+                />
             </div>
         </>
     )

@@ -73,9 +73,6 @@ function App() {
                     >
                         Recycle for money
                     </button>
-                    <button className="primary-button" onClick={() => setMoney(10000000000)}>
-                        Give lots money
-                    </button>
                 </div>
             </div>
             <div className="panel">

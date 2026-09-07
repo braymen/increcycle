@@ -1,0 +1,5 @@
+export const CONFIGS = {
+    BASE_BAG_CAPACITY: 5,
+    BASE_BAG_BUY_COST: 0.01,
+    BASE_CAN_SELL_PRICE: 0.02,
+}
