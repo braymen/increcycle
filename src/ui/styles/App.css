@@ -1,7 +1,11 @@
+:root {
+    font-family: 'Segoe UI', sans-serif;
+}
+
 html,
 body {
     color: #60e075;
-    background-color: #081608;
+    background-color: #122f12;
 }
 
 h1 {

@@ -20,7 +20,7 @@ export const initialState = (): GameState => {
         lastTick: 0,
         lastSave: 0,
         resources: {
-            money: -1,
+            money: 0,
             cans: -1,
             bags: 1,
         },
@@ -75,12 +75,11 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             }
         }
         case GameActionKeys.CHANGE_MONEY: {
-            const adjustedMoney = state.resources.money < 0 ? 1 : 0
             return {
                 ...state,
                 resources: {
                     ...state.resources,
-                    money: Math.round(Math.max(0, state.resources.money + payload.amount + adjustedMoney) * 100) / 100,
+                    money: Math.round(Math.max(0, state.resources.money + payload.amount) * 100) / 100,
                 },
             }
         }
