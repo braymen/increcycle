@@ -26,8 +26,15 @@ function App() {
                     Inc<span style={{ color: '#60e075' }}>recycle</span>
                 </span>
                 {playerCount !== null ? (
-                    <span>
-                        {playerCount} {playerCount === 1 ? 'Player' : 'Players'} Online
+                    <span style={{ fontSize: '14px' }}>
+                        {playerCount} Playing{' '}
+                        <span
+                            className="help-marker"
+                            data-tooltip="There's no online feature nor any tracking other than player count."
+                            data-tooltip-align="left bottom"
+                        >
+                            (?)
+                        </span>
                     </span>
                 ) : null}
             </div>
@@ -39,8 +46,12 @@ function App() {
                 <p>
                     <span>Plastic Bags: {state.resources.bags}</span>
                     <span style={{ float: 'right' }}>
-                        {0}/{bagCapacity} bag filled{' '}
-                        <span className="help-marker" data-tooltip="As you pick up cans, you use up a bag.">
+                        {state.resources.bagStorage}/{bagCapacity} bag filled{' '}
+                        <span
+                            className="help-marker"
+                            data-tooltip="As you pick up cans, you use up a bag."
+                            data-tooltip-align="left"
+                        >
                             (?)
                         </span>
                     </span>

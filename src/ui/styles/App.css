@@ -67,12 +67,24 @@ p {
     margin-bottom: 2px;
     z-index: 1;
     width: max-content;
-    max-width: 200px;
+    max-width: min(200px, calc(100vw - 32px));
     padding: 4px 8px;
     border: 1px solid #022e05;
     background-color: #0f5414;
     color: #60e075;
     font-size: 16px;
+}
+
+.help-marker[data-tooltip-align~='left']:hover::after {
+    left: auto;
+    right: 0;
+}
+
+.help-marker[data-tooltip-align~='bottom']:hover::after {
+    top: 100%;
+    bottom: auto;
+    margin-top: 2px;
+    margin-bottom: 0;
 }
 
 .action-grid {

@@ -1,3 +1,5 @@
+import { calculateDerived } from './formula'
+
 // Setting up Game State
 export interface GameState {
     version: number
@@ -7,6 +9,7 @@ export interface GameState {
         money: number
         cans: number
         bags: number
+        bagStorage: number
     }
     levels: {
         volunteers: number
@@ -23,6 +26,7 @@ export const initialState = (): GameState => {
             money: 0,
             cans: -1,
             bags: 1,
+            bagStorage: 0,
         },
         levels: {
             volunteers: 0,
@@ -57,11 +61,30 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
     switch (type) {
         case GameActionKeys.CHANGE_CANS: {
             if (state.resources.cans < 0) state.resources.cans = 0 // This is for the scaffolding logic
+            if (payload.amount <= 0) {
+                return {
+                    ...state,
+                    resources: {
+                        ...state.resources,
+                        cans: Math.max(0, state.resources.cans + payload.amount),
+                    },
+                }
+            }
+
+            const { bags, bagStorage } = state.resources
+            if (bags <= 0) return state
+            const { bagCapacity } = calculateDerived(state)
+            const openSpace = bags * bagCapacity - bagStorage
+            const addedCans = Math.min(openSpace, payload.amount)
+            const filled = bagStorage + addedCans
+
             return {
                 ...state,
                 resources: {
                     ...state.resources,
-                    cans: Math.max(0, state.resources.cans + payload.amount),
+                    cans: state.resources.cans + addedCans,
+                    bags: bags - Math.floor(filled / bagCapacity),
+                    bagStorage: filled % bagCapacity,
                 },
             }
         }
