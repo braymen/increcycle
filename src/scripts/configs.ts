@@ -14,4 +14,8 @@ export const CONFIGS = {
         autoClick: 0.1,
         bulkBuy: 1,
     },
+    BASE_IMPACT: {
+        CANS: 0.01,
+        TREES: 5,
+    },
 }

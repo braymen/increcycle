@@ -1,3 +1,4 @@
+import { CONFIGS } from '../configs'
 import { calculateDerived } from '../formula'
 import type { GameState } from '../reducer'
 
@@ -31,7 +32,7 @@ export const changeCans = (state: GameState, amount: number): GameState => {
             cans: cans + addedCans,
             bags: bags - Math.floor(filled / bagCapacity),
             bagStorage: filled % bagCapacity,
-            impact: addedCans > 0 ? impact + addedCans * 0.01 : impact,
+            impact: addedCans > 0 ? impact + addedCans * CONFIGS.BASE_IMPACT.CANS : impact,
         },
     }
 }

@@ -1,22 +1,15 @@
-# Planning Organization
+# Just some ideas
 
-## Things I'll need to organize
+- Homebase is some form of automation. Build solar panels to generate electricity, which is used to compress cans into aluminum blocks, which can be sold for more money.
 
-- Scripts for the framework
-- Scripts for the game
-- Balancing Config
-- Images
-- UI components
-- UI pages
-- UI templates (kinda like pages/components, but re-usable with dif data)
-- Content JSON
-- Helpers, just things I use a lot
-- Typescript models
+- Introduce a moving market on Aluminum blocks. So you can time selling
 
-# Game Loop
-- Carry Size = 5
-- Pick up plastic bag
-- Pick up cans
-- Recycle cans for money (loose bag)
-- Recycle plastic bags for money
-- Bring on worker (fills plastic bags)
+- Need something with trees... They need some kind of mechanic. Maybe they make oxygen or happiness or something like that
+
+- Split up the auto click. Should be auto pick up cans, auto recycle, etc. 
+
+- Auto Buy Bags somehow
+
+- Maybe Volunteers have some kind of management system
+
+- Maybe some kind of fundraiser thing

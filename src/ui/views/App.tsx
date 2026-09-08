@@ -101,16 +101,9 @@ function App() {
                         {state.resources.saplings >= 0 ? (
                             <p>
                                 <span>
-                                    <span style={{ opacity: '.6' }}>Saplings:</span> {state.resources.saplings}
-                                </span>
-                            </p>
-                        ) : (
-                            <></>
-                        )}
-                        {state.resources.trees >= 0 ? (
-                            <p>
-                                <span>
-                                    <span style={{ opacity: '.6' }}>Trees:</span> {state.resources.trees}
+                                    <span style={{ opacity: '.6' }}>Saplings:</span> {state.resources.saplings}{' '}
+                                    <span style={{ color: '#fb00ff' }}>⇒</span> <span style={{ opacity: '.6' }}>Trees:</span>{' '}
+                                    {state.resources.trees}
                                 </span>
                             </p>
                         ) : (
@@ -156,6 +149,10 @@ function App() {
                                     callback={() => {
                                         dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'saplings', amount: -1 } })
                                         dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'trees', amount: 1 } })
+                                        dispatch({
+                                            type: 'CHANGE_RESOURCE',
+                                            payload: { key: 'impact', amount: CONFIGS.BASE_IMPACT.TREES },
+                                        })
                                     }}
                                 />
                             ) : (
@@ -224,7 +221,7 @@ function App() {
                         />
                     </div>
                     <div className="panel">
-                        <h2>Green Impact Exchange</h2>
+                        <h2>Impact Exchange</h2>
                         <ShopItem
                             title="Auto Click"
                             type="unlock"
