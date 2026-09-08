@@ -71,7 +71,7 @@ p {
     gap: 4px 16px;
     max-width: 1440px;
     margin-inline: auto;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #0b4910;
 }
 
@@ -139,7 +139,7 @@ p {
     margin-top: 8px;
     background-color: #042713;
     padding: 8px 14px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #0b4910;
 }
 
