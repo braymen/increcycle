@@ -4,6 +4,7 @@ import { useGameDerived, useGameDispatch, useGameState } from '../state/GameCont
 import { PlayerCount } from '../state/PlayerCount'
 import ShopItem from '../components/ShopItem'
 import ActionButton from '../components/ActionButton'
+import SocialLinks from '../components/SocialLinks'
 import { CONFIGS } from '../../scripts/configs'
 
 function App() {
@@ -21,27 +22,34 @@ function App() {
         <>
             <div className="app-header">
                 <span className="app-title">
-                    Increcycle <span style={{ fontSize: '14px', opacity: '.6' }}>- By Braymen</span>
-                </span>
-                {playerCount !== null ? (
-                    <span style={{ fontSize: '14px' }}>
-                        {playerCount} Playing{' '}
-                        <span
-                            className="help-marker"
-                            data-tooltip="There's no online feature nor any tracking other than player count."
-                            data-tooltip-align="left bottom"
-                        >
-                            (?)
-                        </span>
+                    Increcycle{' '}
+                    <span style={{ fontSize: '14px', opacity: '.6', fontWeight: '400', textTransform: 'initial' }}>
+                        - An open-source game, by Braymen, about saving the planet by doing impactful sustainable actions.
                     </span>
-                ) : null}
+                </span>
+                <div className="app-header-right">
+                    {playerCount !== null ? (
+                        <>
+                            <span className="player-count">
+                                {playerCount} Playing{' '}
+                                <span
+                                    className="help-marker"
+                                    data-tooltip="There's no online feature nor any tracking other than player count."
+                                    data-tooltip-align="left bottom"
+                                >
+                                    (?)
+                                </span>
+                            </span>
+                            <span className="header-divider" aria-hidden="true" />
+                        </>
+                    ) : null}
+                    <SocialLinks />
+                </div>
             </div>
             <div className="columns">
                 <div className="column">
                     <div className="panel">
-                        <h1 style={{ margin: 0, padding: 0, color: '#ddfee2' }}>
-                            <span style={{ opacity: '.3' }}>Money:</span> ${state.resources.money.toFixed(2)}
-                        </h1>
+                        <h1 style={{ margin: 0, padding: 0, color: '#ddfee2' }}>${state.resources.money.toFixed(2)}</h1>
                     </div>
                     <div className="panel">
                         <h2>Resources</h2>
@@ -119,8 +127,9 @@ function App() {
                                 callback={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: canPickup } })}
                             />
                             <ActionButton
-                                title="Recycle cans for money"
+                                title="Recycle cans"
                                 disabled={state.resources.cans <= 0}
+                                autoClickable={state.unlocks.autoClick}
                                 callback={() => {
                                     dispatch({
                                         type: 'CHANGE_MONEY',

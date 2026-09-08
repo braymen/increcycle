@@ -5,7 +5,7 @@
 html,
 body {
     color: #60e075;
-    background-color: #172005;
+    background-color: #131516;
     -webkit-user-select: none;
     user-select: none;
 }
@@ -24,7 +24,7 @@ h2 {
     padding: 4px 0;
     margin: 0;
     margin-bottom: 8px;
-    border-bottom: 1px dashed #60e0754f;
+    border-bottom: 1px solid #60e07540;
 }
 
 p {
@@ -63,7 +63,7 @@ p {
 .app-header {
     box-sizing: border-box;
     background-color: #021803;
-    padding: 8px 14px;
+    padding: 10px 14px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -72,13 +72,54 @@ p {
     max-width: 1440px;
     margin-inline: auto;
     border-radius: 8px;
+    border: 1px solid #0b4910;
 }
 
 .app-title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 800;
     color: #60e075;
-    font-style: italic;
+    text-transform: uppercase;
+}
+
+.app-header-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+}
+
+.player-count {
+    font-size: 13px;
+    position: relative;
+    top: -1px;
+}
+
+.header-divider {
+    width: 1px;
+    height: 16px;
+    background-color: #60e07540;
+}
+
+.social-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #60e07599;
+}
+
+.social-link:hover {
+    color: #60e075;
+}
+
+.social-link svg {
+    display: block;
 }
 
 .columns {
@@ -96,9 +137,10 @@ p {
 
 .panel {
     margin-top: 8px;
-    background-color: #021803;
+    background-color: #042713;
     padding: 8px 14px;
     border-radius: 8px;
+    border: 1px solid #0b4910;
 }
 
 .help-marker {
@@ -209,7 +251,7 @@ p {
 @media (max-width: 640px) {
     .columns {
         grid-template-columns: minmax(0, 1fr);
-        gap: 16px;
+        gap: 0px;
     }
 }
 
