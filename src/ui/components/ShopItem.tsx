@@ -38,8 +38,8 @@ export const ShopItem = (props: ShopItemProps) => {
                 </span>
             </div>
             <div style={{ textAlign: 'right', marginTop: '2px' }}>
-                Cost: {props.currency ? '' : '$'}
-                {props.price.toFixed(2)} {props.currency ? props.currency : ''}
+                <span style={{ opacity: '.5' }}>Cost:</span> {props.currency ? props.price : '$' + props.price.toFixed(2)}{' '}
+                {props.currency ? props.currency : ''}
             </div>
         </div>
     )

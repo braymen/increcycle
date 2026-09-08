@@ -12,10 +12,14 @@ export interface GameState {
         cans: number
         bags: number
         bagStorage: number
+        saplings: number
+        trees: number
+        gaiaFavor: number
     }
     levels: {
         volunteers: number
         bagCapacity: number
+        canPickup: number
     }
 }
 
@@ -29,32 +33,37 @@ export const initialState = (): GameState => {
             cans: -1,
             bags: 1,
             bagStorage: 0,
+            saplings: -1,
+            trees: -1,
+            gaiaFavor: -1,
         },
         levels: {
             volunteers: 0,
             bagCapacity: 0,
+            canPickup: 0,
         },
     }
 }
+
+export type ResourceKeys = Exclude<keyof GameState['resources'], 'money' | 'cans'>
+export type LevelKeys = keyof GameState['levels']
 
 // Action Types
 export const GameActionKeys = {
     TICK: 'TICK',
     CHANGE_CANS: 'CHANGE_CANS',
-    CHANGE_BAGS: 'CHANGE_BAGS',
     CHANGE_MONEY: 'CHANGE_MONEY',
-    CHANGE_VOLUNTEERS: 'CHANGE_VOLUNTEERS',
-    CHANGE_BAG_CAPACITY: 'CHANGE_BAG_CAPACITY',
+    CHANGE_RESOURCE: 'CHANGE_RESOURCE',
+    CHANGE_LEVEL: 'CHANGE_LEVEL',
 } as const
 
 // Action Payloads
 type GameActionPayloads = {
     [GameActionKeys.TICK]: { now: number }
     [GameActionKeys.CHANGE_CANS]: { amount: number }
-    [GameActionKeys.CHANGE_BAGS]: { amount: number }
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
-    [GameActionKeys.CHANGE_VOLUNTEERS]: { amount: number }
-    [GameActionKeys.CHANGE_BAG_CAPACITY]: { amount: number }
+    [GameActionKeys.CHANGE_RESOURCE]: { key: ResourceKeys; amount: number }
+    [GameActionKeys.CHANGE_LEVEL]: { key: LevelKeys; amount: number }
 }
 
 // Action Typing
@@ -85,15 +94,6 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         case GameActionKeys.CHANGE_CANS: {
             return changeCans(state, payload.amount)
         }
-        case GameActionKeys.CHANGE_BAGS: {
-            return {
-                ...state,
-                resources: {
-                    ...state.resources,
-                    bags: Math.max(0, state.resources.bags + payload.amount),
-                },
-            }
-        }
         case GameActionKeys.CHANGE_MONEY: {
             return {
                 ...state,
@@ -103,21 +103,24 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 },
             }
         }
-        case GameActionKeys.CHANGE_VOLUNTEERS: {
+        case GameActionKeys.CHANGE_RESOURCE: {
+            if (payload.amount === 0) return state
+            const base = Math.max(0, state.resources[payload.key]) // This is for the scaffolding logic
+
             return {
                 ...state,
-                levels: {
-                    ...state.levels,
-                    volunteers: Math.max(0, state.levels.volunteers + payload.amount),
+                resources: {
+                    ...state.resources,
+                    [payload.key]: Math.max(0, base + payload.amount),
                 },
             }
         }
-        case GameActionKeys.CHANGE_BAG_CAPACITY: {
+        case GameActionKeys.CHANGE_LEVEL: {
             return {
                 ...state,
                 levels: {
                     ...state.levels,
-                    bagCapacity: Math.max(0, state.levels.bagCapacity + payload.amount),
+                    [payload.key]: Math.max(0, state.levels[payload.key] + payload.amount),
                 },
             }
         }

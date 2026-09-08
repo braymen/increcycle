@@ -6,7 +6,8 @@ import { CONFIGS } from '../../scripts/configs'
 
 function App() {
     const state = useGameState()
-    const { bagCapacity, volunterCost, cansPerSecond, bagCapacityCost, bagCost } = useGameDerived()
+    const { bagCapacity, volunterCost, cansPerSecond, bagCapacityCost, bagCost, canPickupCost, canPickup, saplingCost } =
+        useGameDerived()
     const dispatch = useGameDispatch()
     const playerCount = PlayerCount()
 
@@ -68,6 +69,20 @@ function App() {
                         ) : (
                             <></>
                         )}
+                        {state.resources.saplings >= 0 ? (
+                            <p>
+                                <span>Saplings: {state.resources.saplings}</span>
+                            </p>
+                        ) : (
+                            <></>
+                        )}
+                        {state.resources.trees >= 0 ? (
+                            <p>
+                                <span>Trees: {state.resources.trees}</span>
+                            </p>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className="panel">
                         <h2>Actions</h2>
@@ -75,7 +90,7 @@ function App() {
                             <button
                                 disabled={state.resources.bags <= 0}
                                 className="primary-button"
-                                onClick={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: 1 } })}
+                                onClick={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: canPickup } })}
                             >
                                 Pick up cans
                             </button>
@@ -97,9 +112,23 @@ function App() {
                             {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
                                 <button
                                     className="primary-button"
-                                    onClick={() => dispatch({ type: 'CHANGE_BAGS', payload: { amount: 1 } })}
+                                    onClick={() => dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'bags', amount: 1 } })}
                                 >
                                     Scavenge for a Free Bag
+                                </button>
+                            ) : (
+                                <></>
+                            )}
+                            {state.resources.saplings >= 0 ? (
+                                <button
+                                    disabled={state.resources.saplings <= 0}
+                                    className="primary-button"
+                                    onClick={() => {
+                                        dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'saplings', amount: -1 } })
+                                        dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'trees', amount: 1 } })
+                                    }}
+                                >
+                                    Plant Tree
                                 </button>
                             ) : (
                                 <></>
@@ -107,15 +136,16 @@ function App() {
                         </div>
                     </div>
                     <div className="panel">
-                        <h2>Shop</h2>
+                        <h2>Consumables Shop</h2>
                         <ShopItem
                             title="Plastic Bags"
                             price={bagCost}
                             currentCurrency={state.resources.money}
                             callback={() => {
                                 dispatch({
-                                    type: 'CHANGE_BAGS',
+                                    type: 'CHANGE_RESOURCE',
                                     payload: {
+                                        key: 'bags',
                                         amount: 1,
                                     },
                                 })
@@ -128,6 +158,31 @@ function App() {
                             }}
                         />
                         <ShopItem
+                            title="Saplings"
+                            price={saplingCost}
+                            currentCurrency={state.resources.money}
+                            callback={() => {
+                                dispatch({
+                                    type: 'CHANGE_RESOURCE',
+                                    payload: {
+                                        key: 'saplings',
+                                        amount: 1,
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_MONEY',
+                                    payload: {
+                                        amount: -saplingCost,
+                                    },
+                                })
+                            }}
+                        />
+                    </div>
+                </div>
+                <div className="column">
+                    <div className="panel">
+                        <h2>Upgrades</h2>
+                        <ShopItem
                             title="Hire a Volunteer"
                             description="Helps pick up cans, once per second each."
                             price={volunterCost}
@@ -135,8 +190,9 @@ function App() {
                             currentCurrency={state.resources.money}
                             callback={() => {
                                 dispatch({
-                                    type: 'CHANGE_VOLUNTEERS',
+                                    type: 'CHANGE_LEVEL',
                                     payload: {
+                                        key: 'volunteers',
                                         amount: 1,
                                     },
                                 })
@@ -149,6 +205,28 @@ function App() {
                             }}
                         />
                         <ShopItem
+                            title="Grabber Upgrades"
+                            description="Increase manually picking up cans +1"
+                            price={canPickupCost}
+                            level={state.levels.canPickup}
+                            currentCurrency={state.resources.money}
+                            callback={() => {
+                                dispatch({
+                                    type: 'CHANGE_LEVEL',
+                                    payload: {
+                                        key: 'canPickup',
+                                        amount: 1,
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_MONEY',
+                                    payload: {
+                                        amount: -canPickupCost,
+                                    },
+                                })
+                            }}
+                        />
+                        <ShopItem
                             title="Bigger Bags"
                             description="Increase bag capacity by +1"
                             price={bagCapacityCost}
@@ -156,22 +234,25 @@ function App() {
                             currentCurrency={state.resources.money}
                             callback={() => {
                                 dispatch({
-                                    type: 'CHANGE_BAG_CAPACITY',
+                                    type: 'CHANGE_LEVEL',
                                     payload: {
+                                        key: 'bagCapacity',
                                         amount: 1,
                                     },
                                 })
                                 dispatch({
                                     type: 'CHANGE_MONEY',
                                     payload: {
-                                        amount: -volunterCost,
+                                        amount: -bagCapacityCost,
                                     },
                                 })
                             }}
                         />
                     </div>
+                    <div className="panel">
+                        <h2>Warehouse</h2>
+                    </div>
                 </div>
-                <div className="column"></div>
                 <div className="column"></div>
             </div>
         </>
