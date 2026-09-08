@@ -5,7 +5,7 @@
 html,
 body {
     color: #60e075;
-    background-color: #122f12;
+    background-color: #172005;
     -webkit-user-select: none;
     user-select: none;
 }
@@ -24,7 +24,7 @@ h2 {
     padding: 4px 0;
     margin: 0;
     margin-bottom: 8px;
-    border-bottom: 1px solid #60e075;
+    border-bottom: 1px dashed #60e0754f;
 }
 
 p {
@@ -37,11 +37,21 @@ p {
     color: #60e075;
     border-color: #022e05;
     padding: 4px 24px;
+    transition:
+        background-color 60ms linear,
+        transform 60ms linear;
 }
 
 .primary-button:hover {
     border-color: #05510a;
     cursor: pointer;
+}
+
+.primary-button:not(:disabled):active,
+.primary-button.pressed {
+    background-color: #1a7d21;
+    border-color: #60e075;
+    transform: translateY(1px);
 }
 
 .primary-button:disabled,
@@ -52,22 +62,23 @@ p {
 
 .app-header {
     box-sizing: border-box;
-    background-color: #091d09;
+    background-color: #021803;
+    padding: 8px 14px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 4px 16px;
-    padding: 8px 16px;
-    border: dashed 2px #ffffff3b;
     max-width: 1440px;
     margin-inline: auto;
+    border-radius: 8px;
 }
 
 .app-title {
-    font-size: 24px;
-    font-weight: 800;
-    color: #ddfee2;
+    font-size: 18px;
+    font-weight: 600;
+    color: #60e075;
+    font-style: italic;
 }
 
 .columns {
@@ -85,6 +96,9 @@ p {
 
 .panel {
     margin-top: 8px;
+    background-color: #021803;
+    padding: 8px 14px;
+    border-radius: 8px;
 }
 
 .help-marker {
@@ -132,8 +146,57 @@ p {
     gap: 8px;
 }
 
-.action-grid > .primary-button {
+.action-grid .primary-button {
     box-sizing: border-box;
+    padding: 4px 8px;
+}
+
+.action-button-group {
+    display: flex;
+    gap: 4px;
+}
+
+.action-button-group > .primary-button {
+    flex: 1;
+    min-width: 0;
+}
+
+.auto-click-button {
+    flex: none;
+    box-sizing: border-box;
+    background-color: #540f0f;
+    color: #e06060;
+    border-color: #3b1616;
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.auto-click-button:hover {
+    border-color: rgb(86, 26, 26);
+    cursor: pointer;
+}
+
+.auto-click-button.active {
+    background-color: #0f5414;
+    border-color: #022e04;
+    color: #60e075;
+}
+
+.auto-click-button.active:hover {
+    border-color: #05510a;
+    cursor: pointer;
+}
+
+.bulk-buy-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.bulk-buy-row > .primary-button {
+    box-sizing: border-box;
+    flex: 1;
+    min-width: 0;
     padding: 4px 8px;
 }
 

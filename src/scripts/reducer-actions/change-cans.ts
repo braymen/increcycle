@@ -4,6 +4,7 @@ import type { GameState } from '../reducer'
 export const changeCans = (state: GameState, amount: number): GameState => {
     if (amount === 0) return state
     const cans = Math.max(0, state.resources.cans) // This is for the scaffolding logic
+    const impact = Math.max(0, state.resources.impact) // This is for the scaffolding logic
 
     if (amount < 0) {
         return {
@@ -30,6 +31,7 @@ export const changeCans = (state: GameState, amount: number): GameState => {
             cans: cans + addedCans,
             bags: bags - Math.floor(filled / bagCapacity),
             bagStorage: filled % bagCapacity,
+            impact: addedCans > 0 ? impact + addedCans * 0.01 : impact,
         },
     }
 }

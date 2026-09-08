@@ -16,7 +16,7 @@ export const calculateDerived = (state: GameState): GameDerived => ({
     bagCapacity: CONFIGS.BASE_BAG_CAPACITY + state.levels.bagCapacity,
     volunterCost: CONFIGS.BASE_VOLUNTEER_BUY_COST * Math.pow(state.levels.volunteers + 1, 3),
     bagCapacityCost: CONFIGS.BASE_BAG_CAPACITY_COST * Math.pow(state.levels.bagCapacity + 1, 3),
-    canPickupCost: CONFIGS.BASE_CAN_PICKUP_COST * Math.pow(state.levels.bagCapacity + 1, 3),
+    canPickupCost: CONFIGS.BASE_CAN_PICKUP_COST * Math.pow(state.levels.canPickup + 1, 3),
     cansPerSecond: state.levels.volunteers * CONFIGS.BASE_VOLUNTEER_CANS_PER_SECOND,
     bagCost: CONFIGS.BASE_BAG_BUY_COST,
     canPickup: 1 + state.levels.canPickup,

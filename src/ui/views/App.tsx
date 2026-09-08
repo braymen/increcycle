@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import '../styles/App.css'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { PlayerCount } from '../state/PlayerCount'
 import ShopItem from '../components/ShopItem'
+import ActionButton from '../components/ActionButton'
 import { CONFIGS } from '../../scripts/configs'
 
 function App() {
@@ -10,12 +12,16 @@ function App() {
         useGameDerived()
     const dispatch = useGameDispatch()
     const playerCount = PlayerCount()
+    const [bulkAmount, setBulkAmount] = useState(1)
+
+    const buyAmount = state.unlocks.bulkBuy ? bulkAmount : 1
+    const bulkPrice = (price: number) => Math.round(price * buyAmount * 100) / 100
 
     return (
         <>
             <div className="app-header">
                 <span className="app-title">
-                    Inc<span style={{ color: '#60e075' }}>recycle</span>
+                    Increcycle <span style={{ fontSize: '14px', opacity: '.6' }}>- By Braymen</span>
                 </span>
                 {playerCount !== null ? (
                     <span style={{ fontSize: '14px' }}>
@@ -32,13 +38,17 @@ function App() {
             </div>
             <div className="columns">
                 <div className="column">
-                    <h1 style={{ margin: 0, padding: 0, marginTop: '16px', color: '#ddfee2' }}>
-                        Money: ${state.resources.money.toFixed(2)}
-                    </h1>
-                    <div className="panel" style={{ marginTop: 0 }}>
+                    <div className="panel">
+                        <h1 style={{ margin: 0, padding: 0, color: '#ddfee2' }}>
+                            <span style={{ opacity: '.3' }}>Money:</span> ${state.resources.money.toFixed(2)}
+                        </h1>
+                    </div>
+                    <div className="panel">
                         <h2>Resources</h2>
                         <p>
-                            <span>Plastic Bags: {state.resources.bags}</span>
+                            <span>
+                                <span style={{ opacity: '.6' }}>Plastic Bags:</span> {state.resources.bags}
+                            </span>
                             <span style={{ float: 'right' }}>
                                 {state.resources.bagStorage}/{bagCapacity} bag filled{' '}
                                 <span
@@ -52,7 +62,9 @@ function App() {
                         </p>
                         {state.resources.cans >= 0 ? (
                             <p>
-                                <span>Cans: {state.resources.cans}</span>
+                                <span>
+                                    <span style={{ opacity: '.6' }}>Cans:</span> {state.resources.cans}
+                                </span>
                                 {cansPerSecond > 0 ? (
                                     <span style={{ float: 'right' }}>
                                         +{cansPerSecond}/sec{' '}
@@ -69,16 +81,29 @@ function App() {
                         ) : (
                             <></>
                         )}
+                        {state.resources.impact >= 0 ? (
+                            <p>
+                                <span>
+                                    <span style={{ opacity: '.6' }}>Impact:</span> {state.resources.impact.toFixed(2)}
+                                </span>
+                            </p>
+                        ) : (
+                            <></>
+                        )}
                         {state.resources.saplings >= 0 ? (
                             <p>
-                                <span>Saplings: {state.resources.saplings}</span>
+                                <span>
+                                    <span style={{ opacity: '.6' }}>Saplings:</span> {state.resources.saplings}
+                                </span>
                             </p>
                         ) : (
                             <></>
                         )}
                         {state.resources.trees >= 0 ? (
                             <p>
-                                <span>Trees: {state.resources.trees}</span>
+                                <span>
+                                    <span style={{ opacity: '.6' }}>Trees:</span> {state.resources.trees}
+                                </span>
                             </p>
                         ) : (
                             <></>
@@ -87,17 +112,16 @@ function App() {
                     <div className="panel">
                         <h2>Actions</h2>
                         <div className="action-grid">
-                            <button
+                            <ActionButton
+                                title="Pick up cans"
                                 disabled={state.resources.bags <= 0}
-                                className="primary-button"
-                                onClick={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: canPickup } })}
-                            >
-                                Pick up cans
-                            </button>
-                            <button
-                                className="primary-button"
+                                autoClickable={state.unlocks.autoClick}
+                                callback={() => dispatch({ type: 'CHANGE_CANS', payload: { amount: canPickup } })}
+                            />
+                            <ActionButton
+                                title="Recycle cans for money"
                                 disabled={state.resources.cans <= 0}
-                                onClick={() => {
+                                callback={() => {
                                     dispatch({
                                         type: 'CHANGE_MONEY',
                                         payload: {
@@ -106,30 +130,25 @@ function App() {
                                     })
                                     dispatch({ type: 'CHANGE_CANS', payload: { amount: -state.resources.cans } })
                                 }}
-                            >
-                                Recycle cans for money
-                            </button>
+                            />
                             {state.resources.money <= 0 && state.resources.bags <= 0 && state.resources.cans <= 0 ? (
-                                <button
-                                    className="primary-button"
-                                    onClick={() => dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'bags', amount: 1 } })}
-                                >
-                                    Scavenge for a Free Bag
-                                </button>
+                                <ActionButton
+                                    title="Scavenge for a Free Bag"
+                                    callback={() => dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'bags', amount: 1 } })}
+                                />
                             ) : (
                                 <></>
                             )}
                             {state.resources.saplings >= 0 ? (
-                                <button
+                                <ActionButton
+                                    title="Plant Tree"
                                     disabled={state.resources.saplings <= 0}
-                                    className="primary-button"
-                                    onClick={() => {
+                                    autoClickable={state.unlocks.autoClick}
+                                    callback={() => {
                                         dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'saplings', amount: -1 } })
                                         dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'trees', amount: 1 } })
                                     }}
-                                >
-                                    Plant Tree
-                                </button>
+                                />
                             ) : (
                                 <></>
                             )}
@@ -137,42 +156,110 @@ function App() {
                     </div>
                     <div className="panel">
                         <h2>Consumables Shop</h2>
+                        {state.unlocks.bulkBuy ? (
+                            <div className="bulk-buy-row">
+                                {CONFIGS.BULK_BUY_AMOUNTS.map((amount) => (
+                                    <button
+                                        key={amount}
+                                        className="primary-button"
+                                        aria-pressed={buyAmount === amount}
+                                        title={`Buy ${amount} at a time`}
+                                        onClick={() => setBulkAmount(amount)}
+                                    >
+                                        {amount}x
+                                    </button>
+                                ))}
+                            </div>
+                        ) : null}
                         <ShopItem
                             title="Plastic Bags"
-                            price={bagCost}
+                            price={bulkPrice(bagCost)}
+                            quantity={buyAmount}
                             currentCurrency={state.resources.money}
                             callback={() => {
                                 dispatch({
                                     type: 'CHANGE_RESOURCE',
                                     payload: {
                                         key: 'bags',
-                                        amount: 1,
+                                        amount: buyAmount,
                                     },
                                 })
                                 dispatch({
                                     type: 'CHANGE_MONEY',
                                     payload: {
-                                        amount: -bagCost,
+                                        amount: -bulkPrice(bagCost),
                                     },
                                 })
                             }}
                         />
                         <ShopItem
                             title="Saplings"
-                            price={saplingCost}
+                            price={bulkPrice(saplingCost)}
+                            quantity={buyAmount}
                             currentCurrency={state.resources.money}
                             callback={() => {
                                 dispatch({
                                     type: 'CHANGE_RESOURCE',
                                     payload: {
                                         key: 'saplings',
-                                        amount: 1,
+                                        amount: buyAmount,
                                     },
                                 })
                                 dispatch({
                                     type: 'CHANGE_MONEY',
                                     payload: {
-                                        amount: -saplingCost,
+                                        amount: -bulkPrice(saplingCost),
+                                    },
+                                })
+                            }}
+                        />
+                    </div>
+                    <div className="panel">
+                        <h2>Green Impact Exchange</h2>
+                        <ShopItem
+                            title="Auto Click"
+                            type="unlock"
+                            description="Adds an Auto toggle to actions that clicks them for you."
+                            price={CONFIGS.UNLOCK_COSTS.autoClick}
+                            currency="Impact"
+                            currentCurrency={state.resources.impact}
+                            purchased={state.unlocks.autoClick}
+                            callback={() => {
+                                dispatch({
+                                    type: 'UNLOCK',
+                                    payload: {
+                                        key: 'autoClick',
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_RESOURCE',
+                                    payload: {
+                                        key: 'impact',
+                                        amount: -CONFIGS.UNLOCK_COSTS.autoClick,
+                                    },
+                                })
+                            }}
+                        />
+                        <ShopItem
+                            title="Bulk Buy"
+                            type="unlock"
+                            description="Adds ability to bulk buy consumables."
+                            price={CONFIGS.UNLOCK_COSTS.bulkBuy}
+                            currency="Impact"
+                            currentCurrency={state.resources.impact}
+                            purchased={state.unlocks.bulkBuy}
+                            callback={() => {
+                                dispatch({
+                                    type: 'UNLOCK',
+                                    payload: {
+                                        key: 'bulkBuy',
+                                    },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_RESOURCE',
+                                    payload: {
+                                        key: 'impact',
+                                        amount: -CONFIGS.UNLOCK_COSTS.bulkBuy,
                                     },
                                 })
                             }}
@@ -249,11 +336,15 @@ function App() {
                             }}
                         />
                     </div>
+                </div>
+                <div className="column">
                     <div className="panel">
-                        <h2>Warehouse</h2>
+                        <h2>Homebase</h2>
+                        <span>
+                            <span style={{ opacity: '.6' }}>Electricity:</span> {state.resources.bags}
+                        </span>
                     </div>
                 </div>
-                <div className="column"></div>
             </div>
         </>
     )

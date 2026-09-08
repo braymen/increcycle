@@ -14,12 +14,16 @@ export interface GameState {
         bagStorage: number
         saplings: number
         trees: number
-        gaiaFavor: number
+        impact: number
     }
     levels: {
         volunteers: number
         bagCapacity: number
         canPickup: number
+    }
+    unlocks: {
+        autoClick: boolean
+        bulkBuy: boolean
     }
 }
 
@@ -35,18 +39,23 @@ export const initialState = (): GameState => {
             bagStorage: 0,
             saplings: -1,
             trees: -1,
-            gaiaFavor: -1,
+            impact: -1,
         },
         levels: {
             volunteers: 0,
             bagCapacity: 0,
             canPickup: 0,
         },
+        unlocks: {
+            autoClick: false,
+            bulkBuy: false,
+        },
     }
 }
 
 export type ResourceKeys = Exclude<keyof GameState['resources'], 'money' | 'cans'>
 export type LevelKeys = keyof GameState['levels']
+export type UnlockKeys = keyof GameState['unlocks']
 
 // Action Types
 export const GameActionKeys = {
@@ -55,6 +64,7 @@ export const GameActionKeys = {
     CHANGE_MONEY: 'CHANGE_MONEY',
     CHANGE_RESOURCE: 'CHANGE_RESOURCE',
     CHANGE_LEVEL: 'CHANGE_LEVEL',
+    UNLOCK: 'UNLOCK',
 } as const
 
 // Action Payloads
@@ -64,6 +74,7 @@ type GameActionPayloads = {
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
     [GameActionKeys.CHANGE_RESOURCE]: { key: ResourceKeys; amount: number }
     [GameActionKeys.CHANGE_LEVEL]: { key: LevelKeys; amount: number }
+    [GameActionKeys.UNLOCK]: { key: UnlockKeys }
 }
 
 // Action Typing
@@ -121,6 +132,16 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 levels: {
                     ...state.levels,
                     [payload.key]: Math.max(0, state.levels[payload.key] + payload.amount),
+                },
+            }
+        }
+        case GameActionKeys.UNLOCK: {
+            if (state.unlocks[payload.key]) return state
+            return {
+                ...state,
+                unlocks: {
+                    ...state.unlocks,
+                    [payload.key]: true,
                 },
             }
         }
