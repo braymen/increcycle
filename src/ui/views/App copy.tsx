@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import '../styles/App.css'
-import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
-import ShopItem from '../components/ShopItem'
-import ActionButton from '../components/ActionButton'
-import { CONFIGS } from '../../scripts/configs'
+import { useGameDerived, useGameDispatch, useGameState } from './src/ui/state/GameContext'
+import ShopItem from './src/ui/components/ShopItem'
+import ActionButton from './src/ui/components/ActionButton'
+import { CONFIGS } from './src/scripts/configs'
 
 function App() {
     const state = useGameState()

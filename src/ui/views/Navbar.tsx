@@ -1,8 +1,11 @@
-import '../styles/App.css'
 import { PlayerCount } from '../state/PlayerCount'
 import SocialLinks from '../components/SocialLinks'
 
-function Navbar() {
+interface Props {
+    showSettings: Function
+}
+
+function Navbar({ showSettings }: Props) {
     const playerCount = PlayerCount()
 
     return (
@@ -31,7 +34,7 @@ function Navbar() {
                         <span className="header-divider" aria-hidden="true" />
                     </>
                 ) : null}
-                <SocialLinks />
+                <SocialLinks showSettings={showSettings} />
             </div>
         </div>
     )

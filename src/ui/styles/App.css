@@ -121,13 +121,16 @@ p {
     display: block;
 }
 
+.content-container {
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
 .columns {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
     align-items: start;
-    max-width: 1440px;
-    margin-inline: auto;
 }
 
 .column:empty {
@@ -135,10 +138,18 @@ p {
 }
 
 .panel {
-    margin-top: 8px;
+    margin-top: 24px;
     background-color: #0d2b04;
+    border: 1px solid #0b4910;
+}
+
+.panel-header {
+    padding: 5px 14px;
+    background-color: #021803;
+}
+
+.panel-container {
     padding: 2px 14px 10px 14px;
-    border: 1px solid #1f5e0c;
 }
 
 .help-marker {

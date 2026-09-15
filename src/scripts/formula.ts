@@ -1,3 +1,4 @@
+import { getLevel } from '../content/levels'
 import { CONFIGS } from './configs'
 import type { GameState } from './reducer'
 
@@ -13,12 +14,12 @@ export interface GameDerived {
 }
 
 export const calculateDerived = (state: GameState): GameDerived => ({
-    bagCapacity: CONFIGS.BASE_BAG_CAPACITY + state.levels.bagCapacity,
-    volunterCost: CONFIGS.BASE_VOLUNTEER_BUY_COST * Math.pow(state.levels.volunteers + 1, 3),
-    bagCapacityCost: CONFIGS.BASE_BAG_CAPACITY_COST * Math.pow(state.levels.bagCapacity + 1, 3),
-    canPickupCost: CONFIGS.BASE_CAN_PICKUP_COST * Math.pow(state.levels.canPickup + 1, 3),
-    cansPerSecond: state.levels.volunteers * CONFIGS.BASE_VOLUNTEER_CANS_PER_SECOND,
+    bagCapacity: CONFIGS.BASE_BAG_CAPACITY + getLevel('bag_capacity', state),
+    volunterCost: CONFIGS.BASE_VOLUNTEER_BUY_COST * Math.pow(getLevel('volunteers', state) + 1, 3),
+    bagCapacityCost: CONFIGS.BASE_BAG_CAPACITY_COST * Math.pow(getLevel('bag_capacity', state) + 1, 3),
+    canPickupCost: CONFIGS.BASE_CAN_PICKUP_COST * Math.pow(getLevel('can_pickup', state) + 1, 3),
+    cansPerSecond: getLevel('volunteers', state) * CONFIGS.BASE_VOLUNTEER_CANS_PER_SECOND,
     bagCost: CONFIGS.BASE_BAG_BUY_COST,
-    canPickup: 1 + state.levels.canPickup,
+    canPickup: 1 + getLevel('can_pickup', state),
     saplingCost: CONFIGS.BASE_SAPLING_COST,
 })

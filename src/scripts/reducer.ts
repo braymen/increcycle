@@ -1,6 +1,4 @@
 import { CONFIGS } from './configs'
-import { calculateDerived } from './formula'
-import { changeCans } from './reducer-actions/change-cans'
 import { ResourcesJSON } from '../content/resources'
 import { LevelsJSON } from '../content/levels'
 import { UnlocksJSON } from '../content/unlocks'
@@ -71,15 +69,10 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             const lastTick = state.lastTick + ticks * CONFIGS.TICK_INTERVAL_MS
 
-            // Actual Game Stuff
-            const { cansPerSecond } = calculateDerived(state)
-            const collected = cansPerSecond * ((ticks * CONFIGS.TICK_INTERVAL_MS) / 1000)
+            // Actual Game Stuff goes here...
 
-            return { ...changeCans(state, collected), lastTick }
+            return { ...state, lastTick }
         }
-        // case GameActionKeys.CHANGE_CANS: {
-        //     return changeCans(state, payload.amount)
-        // }
         case GameActionKeys.CHANGE_MONEY: {
             return {
                 ...state,

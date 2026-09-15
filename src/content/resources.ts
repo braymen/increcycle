@@ -1,3 +1,5 @@
+import type { GameState } from '../scripts/reducer'
+
 interface Resource {
     name: string
     description?: string
@@ -10,5 +12,5 @@ export const ResourcesJSON: Resource[] = [
 ]
 
 export const getResource = (key: string, state: GameState) => {
-    return state.unlocks.includes(key)
+    return state.resources.find((r) => r.name === key)?.amount || 0
 }

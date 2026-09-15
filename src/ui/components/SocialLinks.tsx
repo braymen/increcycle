@@ -7,7 +7,11 @@ const LINKS = {
 
 const size = 18
 
-function SocialLinks() {
+interface Props {
+    showSettings: Function
+}
+
+function SocialLinks({ showSettings }: Props) {
     return (
         <span className="social-links">
             <a
@@ -75,6 +79,24 @@ function SocialLinks() {
                     fill="currentColor"
                 >
                     <path d="M554 217.8C553.9 152.4 503 98.8 443.3 79.5C369.1 55.5 271.3 59 200.4 92.4C114.6 132.9 87.6 221.7 86.6 310.2C85.8 383 93 574.6 201.2 576C281.5 577 293.5 473.5 330.7 423.7C357.1 388.2 391.2 378.2 433.1 367.8C505.1 350 554.2 293.1 554.1 217.8L554 217.8z" />
+                </svg>
+            </a>
+            <span className="header-divider" aria-hidden="true" />
+            <a
+                onClick={() => showSettings()}
+                className="social-link"
+                title="Settings"
+                aria-label="Settings"
+                style={{ cursor: 'pointer' }}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size - 2}
+                    height={size - 2}
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                >
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                 </svg>
             </a>
         </span>

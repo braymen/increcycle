@@ -1,12 +1,11 @@
+import Panel from '../components/Panel'
 import ResourceLine from '../components/ResourceLine'
-import '../styles/App.css'
 
 function Resources() {
     return (
-        <div className="panel">
-            <h2>Resources</h2>
+        <Panel title="Resources">
             <ResourceLine primaryText="Garbage" amount={0} ratePerSecond={1} helperText="Test" />
-        </div>
+        </Panel>
     )
 }
 
