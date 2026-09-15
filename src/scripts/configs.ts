@@ -1,0 +1,21 @@
+export const CONFIGS = {
+    TICK_INTERVAL_MS: 1000,
+    AUTO_CLICK_INTERVAL_MS: 500,
+    BULK_BUY_AMOUNTS: [1, 10, 100, 1000],
+    BASE_BAG_CAPACITY: 5,
+    BASE_BAG_BUY_COST: 0.01,
+    BASE_CAN_SELL_PRICE: 0.02,
+    BASE_VOLUNTEER_CANS_PER_SECOND: 1,
+    BASE_CAN_PICKUP_COST: 0.5,
+    BASE_VOLUNTEER_BUY_COST: 0.1,
+    BASE_BAG_CAPACITY_COST: 1,
+    BASE_SAPLING_COST: 25,
+    UNLOCK_COSTS: {
+        autoClick: 0.1,
+        bulkBuy: 1,
+    },
+    BASE_IMPACT: {
+        CANS: 0.01,
+        TREES: 5,
+    },
+}

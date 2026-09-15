@@ -1,0 +1,260 @@
+:root {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+html,
+body {
+    color: #60e075;
+    background-color: #131516;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+img {
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    padding: 4px 0;
+    margin: 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #60e07540;
+}
+
+p {
+    padding: 4px 0;
+    margin: 0;
+}
+
+.primary-button {
+    background-color: #0f5414;
+    color: #60e075;
+    border-color: #022e05;
+    padding: 4px 24px;
+    transition:
+        background-color 60ms linear,
+        transform 60ms linear;
+}
+
+.primary-button:hover {
+    border-color: #05510a;
+    cursor: pointer;
+}
+
+.primary-button:not(:disabled):active,
+.primary-button.pressed {
+    background-color: #1a7d21;
+    border-color: #60e075;
+    transform: translateY(1px);
+}
+
+.primary-button:disabled,
+.primary-button[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.app-header {
+    box-sizing: border-box;
+    background-color: #021803;
+    padding: 10px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 16px;
+    max-width: 1440px;
+    margin-inline: auto;
+    border: 1px solid #0b4910;
+}
+
+.app-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #60e075;
+    text-transform: uppercase;
+}
+
+.app-header-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+}
+
+.player-count {
+    font-size: 13px;
+    position: relative;
+    top: -1px;
+}
+
+.header-divider {
+    width: 1px;
+    height: 16px;
+    background-color: #60e07540;
+}
+
+.social-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #60e07599;
+}
+
+.social-link:hover {
+    color: #60e075;
+}
+
+.social-link svg {
+    display: block;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+.column:empty {
+    display: none;
+}
+
+.panel {
+    margin-top: 8px;
+    background-color: #0d2b04;
+    padding: 2px 14px 10px 14px;
+    border: 1px solid #1f5e0c;
+}
+
+.help-marker {
+    display: inline-block;
+    position: relative;
+    color: #60e07599;
+}
+
+.help-marker:hover {
+    cursor: help;
+    color: #60e075e6;
+}
+
+.help-marker[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 2px;
+    z-index: 1;
+    width: max-content;
+    max-width: min(200px, calc(100vw - 32px));
+    padding: 4px 8px;
+    border: 1px solid #022e05;
+    background-color: #0f5414;
+    color: #60e075;
+    font-size: 16px;
+}
+
+.help-marker[data-tooltip-align~='left']:hover::after {
+    left: auto;
+    right: 0;
+}
+
+.help-marker[data-tooltip-align~='bottom']:hover::after {
+    top: 100%;
+    bottom: auto;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.action-grid .primary-button {
+    box-sizing: border-box;
+    padding: 4px 8px;
+}
+
+.action-button-group {
+    display: flex;
+    gap: 4px;
+}
+
+.action-button-group > .primary-button {
+    flex: 1;
+    min-width: 0;
+}
+
+.auto-click-button {
+    flex: none;
+    box-sizing: border-box;
+    background-color: #540f0f;
+    color: #e06060;
+    border-color: #3b1616;
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.auto-click-button:hover {
+    border-color: rgb(86, 26, 26);
+    cursor: pointer;
+}
+
+.auto-click-button.active {
+    background-color: #0f5414;
+    border-color: #022e04;
+    color: #60e075;
+}
+
+.auto-click-button.active:hover {
+    border-color: #05510a;
+    cursor: pointer;
+}
+
+.bulk-buy-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.bulk-buy-row > .primary-button {
+    box-sizing: border-box;
+    flex: 1;
+    min-width: 0;
+    padding: 4px 8px;
+}
+
+@media (max-width: 1024px) {
+    .columns {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .columns {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
