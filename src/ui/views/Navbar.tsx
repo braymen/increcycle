@@ -12,7 +12,8 @@ function Navbar({ showSettings }: Props) {
         <div className="app-header-container">
             <div className="app-header">
                 <span className="app-title" style={{}}>
-                    <span>Increcycle</span> <span className="app-sub-title">An open-source game, by Braymen, about garbage.</span>
+                    <span style={{ paddingTop: '6px' }}>Increcycle</span>{' '}
+                    <span className="app-sub-title">An open-source game, by Braymen, about garbage.</span>
                 </span>
                 <div className="app-header-right">
                     {playerCount !== null ? (
