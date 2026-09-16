@@ -11,21 +11,29 @@ interface Props {
 function ResourceLine({ primaryText, amount, secondaryText, ratePerSecond, helperText }: Props) {
     return (
         <p>
-            <span>
-                <span style={{}}>{primaryText}:</span> {amount}{' '}
-                <span style={{ fontSize: '12px', marginLeft: '2px' }}>
-                    ({ratePerSecond && ratePerSecond >= 0 ? '+' : '-'}
-                    {ratePerSecond}/sec)
-                </span>
-            </span>
-            <span style={{ float: 'right' }}>
-                {secondaryText}{' '}
-                {helperText && (
-                    <span className="help-marker" data-tooltip="As you pick up cans, you use up a bag." data-tooltip-align="left">
-                        (?)
+            <div className="resource-line">
+                <div className="resource-line-left">
+                    {primaryText}{' '}
+                    {helperText && (
+                        <span className="help-marker" data-tooltip="As you pick up cans, you use up a bag." data-tooltip-align="">
+                            (?)
+                        </span>
+                    )}
+                </div>
+                <div className="resource-line-dots"></div>
+                <div className="resource-line-right">
+                    {amount}{' '}
+                    <span
+                        style={{
+                            fontSize: '12px',
+                            marginLeft: '2px',
+                            color: !ratePerSecond ? '#afc0ba' : ratePerSecond > 0 ? '#afc0ba' : '#dc9b9b',
+                        }}
+                    >
+                        ( {ratePerSecond}/sec )
                     </span>
-                )}
-            </span>
+                </div>
+            </div>
         </p>
     )
 }
