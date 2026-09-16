@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import '../styles/App.css'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import ShopItem from '../components/ShopItem'
-import ActionButton from '../components/ActionButton'
 import SocialLinks from '../components/SocialLinks'
 import { CONFIGS } from '../../scripts/configs'
 import Navbar from './Navbar'
@@ -17,6 +16,7 @@ import Sorting from './Sorting'
 import Logistics from './Logistics'
 import Market from './Market'
 import Achievements from './Achievements'
+import { clearSoundEvents, addSoundEvents } from '../../scripts/sounds'
 
 function App() {
     const state = useGameState()
@@ -27,24 +27,8 @@ function App() {
     const showSettings = () => setSettings(!settings)
 
     useEffect(() => {
-        const clickSound = (event: PointerEvent) => {
-            const isButton = (event.target as HTMLInputElement).nodeName === 'BUTTON'
-            if (!isButton) return
-            var context = new window.AudioContext()
-            var osc = context.createOscillator()
-            var gain = context.createGain()
-            osc.type = 'triangle'
-            osc.frequency.value = 100
-            osc.connect(gain)
-            gain.connect(context.destination)
-            gain.gain.value = 0.2
-            osc.start()
-            osc.stop(context.currentTime + 0.05)
-        }
-
-        document.addEventListener('click', clickSound)
-
-        return () => document.removeEventListener('click', clickSound)
+        addSoundEvents()
+        return () => clearSoundEvents()
     }, [])
 
     return (

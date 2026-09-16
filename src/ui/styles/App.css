@@ -2,7 +2,7 @@
     font-family: 'Segoe UI', sans-serif;
     --text-color-light: white;
     --text-color-dark: #023625;
-    --text-muted: #67867c;
+    --text-muted: #afc0ba;
     --bg-1: #023625;
     --bg-2: #024731;
     --bg-3: #111212;
@@ -11,7 +11,7 @@
 }
 
 .muted-light {
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 .muted-dark {

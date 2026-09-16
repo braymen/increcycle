@@ -18,6 +18,7 @@ export interface GameState {
         amount: number
     }[]
     unlocks: string[]
+    achievements: string[]
 }
 
 export const initialState = (): GameState => {
@@ -29,6 +30,7 @@ export const initialState = (): GameState => {
         resources: [],
         levels: [],
         unlocks: [],
+        achievements: ['Unsorted Trash I'],
     }
 }
 
