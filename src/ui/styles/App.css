@@ -100,6 +100,17 @@ button:active {
     font-family: 'Lalezar', 'Segoe UI', sans-serif;
 }
 
+.app-title-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-title-icon {
+    height: 22px;
+    width: 22px;
+}
+
 .app-sub-title {
     font-size: 14px;
     font-weight: 600;
@@ -159,7 +170,7 @@ button:active {
 .columns {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 16px;
     align-items: start;
 }
 
@@ -168,7 +179,7 @@ button:active {
 }
 
 .panel {
-    margin-top: 24px;
+    margin-top: 16px;
     background-color: var(--bg-1);
     color: var(--text-color-light);
     padding: 14px 8px;

@@ -1,5 +1,6 @@
 import { PlayerCount } from '../state/PlayerCount'
 import SocialLinks from '../components/SocialLinks'
+import faviconIcon from '../assets/favicon.svg'
 
 interface Props {
     showSettings: Function
@@ -12,7 +13,10 @@ function Navbar({ showSettings }: Props) {
         <div className="app-header-container">
             <div className="app-header">
                 <span className="app-title" style={{}}>
-                    <span style={{ paddingTop: '6px' }}>Increcycle</span>{' '}
+                    <span className="app-title-main">
+                        <img className="app-title-icon" src={faviconIcon} />
+                        <span style={{ paddingTop: '6px' }}>Increcycle</span>
+                    </span>
                     <span className="app-sub-title">An open-source game, by Braymen, about garbage.</span>
                 </span>
                 <div className="app-header-right">

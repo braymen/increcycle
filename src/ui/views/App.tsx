@@ -17,6 +17,7 @@ import Logistics from './Logistics'
 import Market from './Market'
 import Achievements from './Achievements'
 import { clearSoundEvents, addSoundEvents } from '../../scripts/sounds'
+import Money from './Money'
 
 function App() {
     const state = useGameState()
@@ -40,6 +41,7 @@ function App() {
                 <div className="content-container">
                     <div className="columns">
                         <div className="column">
+                            <Money />
                             <Resources />
                             <Capacities />
                             <MassBurnSystem />
