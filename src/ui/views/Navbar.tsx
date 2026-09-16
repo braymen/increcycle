@@ -14,10 +14,12 @@ function Navbar({ showSettings }: Props) {
             <div className="app-header">
                 <span className="app-title" style={{}}>
                     <span className="app-title-main">
-                        <img className="app-title-icon" src={faviconIcon} />
+                        <img className="app-title-icon rotating" src={faviconIcon} />
                         <span style={{ paddingTop: '6px' }}>Increcycle</span>
                     </span>
-                    <span className="app-sub-title">An open-source game, by Braymen, about garbage.</span>
+                    <span className="app-sub-title">
+                        A garbage open-source game, by <span style={{ color: 'white' }}>Braymen</span>.
+                    </span>
                 </span>
                 <div className="app-header-right">
                     {playerCount !== null ? (

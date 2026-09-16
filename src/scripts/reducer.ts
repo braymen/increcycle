@@ -83,31 +83,28 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         }
         case GameActionKeys.CHANGE_RESOURCE: {
             if (payload.amount === 0) return state
-            if (ResourcesJSON.find((r) => r.name !== payload.key)) return state // Not valid content
+            if (!ResourcesJSON.find((r) => r.name === payload.key)) return state // Not valid content
             const existingResource = state.resources.find((r) => r.name === payload.key)
-            if (existingResource) {
-                existingResource.amount += payload.amount
-            } else {
-                state.resources.push({ name: payload.key as string, amount: payload.amount })
-            }
-            return state
+            const resources = existingResource
+                ? state.resources.map((r) =>
+                      r.name === payload.key ? { ...r, amount: r.amount + payload.amount } : r,
+                  )
+                : [...state.resources, { name: payload.key as string, amount: payload.amount }]
+            return { ...state, resources }
         }
         case GameActionKeys.CHANGE_LEVEL: {
             if (payload.amount === 0) return state
-            if (LevelsJSON.find((l) => l.name !== payload.key)) return state
+            if (!LevelsJSON.find((l) => l.name === payload.key)) return state
             const existingLevel = state.levels.find((l) => l.name === payload.key)
-            if (existingLevel) {
-                existingLevel.amount += payload.amount
-            } else {
-                state.levels.push({ name: payload.key as string, amount: payload.amount })
-            }
-            return state
+            const levels = existingLevel
+                ? state.levels.map((l) => (l.name === payload.key ? { ...l, amount: l.amount + payload.amount } : l))
+                : [...state.levels, { name: payload.key as string, amount: payload.amount }]
+            return { ...state, levels }
         }
         case GameActionKeys.UNLOCK: {
-            if (UnlocksJSON.find((u) => u.name !== payload.key)) return state
-            if (!state.unlocks.includes(payload.key as string)) return state
-            state.unlocks.push(payload.key as string)
-            return state
+            if (!UnlocksJSON.find((u) => u.name === payload.key)) return state
+            if (state.unlocks.includes(payload.key as string)) return state
+            return { ...state, unlocks: [...state.unlocks, payload.key as string] }
         }
         default:
             return state

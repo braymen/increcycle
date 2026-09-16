@@ -9,16 +9,8 @@ function Resources() {
     return (
         <Panel title="Resources">
             {ResourcesJSON.map((r) => {
-                const ratePerSecond = Math.round(Math.random() * 20 - 10)
                 const playerResource = getResource(r.name, state)
-                return (
-                    <ResourceLine
-                        primaryText={r.name}
-                        amount={playerResource}
-                        ratePerSecond={ratePerSecond}
-                        helperText={r.description}
-                    />
-                )
+                return <ResourceLine primaryText={r.name} amount={playerResource} ratePerSecond={0} helperText={r.description} />
             })}
         </Panel>
     )
