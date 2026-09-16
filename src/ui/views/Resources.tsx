@@ -5,6 +5,7 @@ function Resources() {
     return (
         <Panel title="Resources">
             <ResourceLine primaryText="Garbage" amount={0} ratePerSecond={1} helperText="Test" />
+            <button>Sound</button>
         </Panel>
     )
 }

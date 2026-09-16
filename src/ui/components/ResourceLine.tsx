@@ -12,8 +12,8 @@ function ResourceLine({ primaryText, amount, secondaryText, ratePerSecond, helpe
     return (
         <p>
             <span>
-                <span style={{ opacity: '.6' }}>{primaryText}:</span> {amount}{' '}
-                <span style={{ fontSize: '12px', opacity: '0.6', marginLeft: '2px' }}>
+                <span style={{}}>{primaryText}:</span> {amount}{' '}
+                <span style={{ fontSize: '12px', marginLeft: '2px' }}>
                     ({ratePerSecond && ratePerSecond >= 0 ? '+' : '-'}
                     {ratePerSecond}/sec)
                 </span>

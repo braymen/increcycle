@@ -7,7 +7,28 @@ interface Unlock {
 
 export const UnlocksJSON: Unlock[] = [
     {
-        name: 'trashmart',
+        name: 'Resources',
+    },
+    {
+        name: 'Trashmart',
+    },
+    {
+        name: 'Experiments',
+    },
+    {
+        name: 'Sorting',
+    },
+    {
+        name: 'Capacities',
+    },
+    {
+        name: 'Mass-Burn System',
+    },
+    {
+        name: 'Market',
+    },
+    {
+        name: 'Achievements',
     },
 ]
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../styles/App.css'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import ShopItem from '../components/ShopItem'
@@ -26,8 +26,29 @@ function App() {
 
     const showSettings = () => setSettings(!settings)
 
+    useEffect(() => {
+        const clickSound = (event: PointerEvent) => {
+            const isButton = (event.target as HTMLInputElement).nodeName === 'BUTTON'
+            if (!isButton) return
+            var context = new window.AudioContext()
+            var osc = context.createOscillator()
+            var gain = context.createGain()
+            osc.type = 'triangle'
+            osc.frequency.value = 100
+            osc.connect(gain)
+            gain.connect(context.destination)
+            gain.gain.value = 0.2
+            osc.start()
+            osc.stop(context.currentTime + 0.05)
+        }
+
+        document.addEventListener('click', clickSound)
+
+        return () => document.removeEventListener('click', clickSound)
+    }, [])
+
     return (
-        <>
+        <div>
             <Navbar showSettings={showSettings} />
             {settings ? (
                 <Settings />
@@ -53,7 +74,7 @@ function App() {
                     <Achievements />
                 </div>
             )}
-        </>
+        </div>
     )
 }
 
