@@ -5,6 +5,7 @@ export const CONFIGS = {
     },
     UNLOCKS: {
         SORT_GARBAGE_IN_UNSORTED_WASTE: 10,
-        SORTING_PANEL_IN_MONEY: 10,
+        SORTING_PANEL_IN_MONEY: 25,
+        ORGANIZER_LOGISTIC: 5,
     },
 }

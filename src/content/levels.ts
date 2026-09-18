@@ -7,7 +7,10 @@ interface Level {
 
 export const LevelsJSON: Level[] = [
     {
-        name: 'volunteers',
+        name: 'Truck Driver',
+    },
+    {
+        name: 'Organizer',
     },
 ]
 

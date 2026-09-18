@@ -48,6 +48,9 @@ export const UnlocksJSON: Unlock[] = [
     {
         name: 'Sort Garbage',
     },
+    {
+        name: 'Organizer',
+    },
 ]
 
 export const hasUnlock = (key: string, state: GameState) => {

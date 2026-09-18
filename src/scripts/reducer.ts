@@ -1,7 +1,8 @@
 import { CONFIGS } from './configs'
 import { getResource, ResourcesJSON } from '../content/resources'
-import { LevelsJSON } from '../content/levels'
+import { getLevel, LevelsJSON } from '../content/levels'
 import { hasUnlock, UnlocksJSON } from '../content/unlocks'
+import { calculateDerived } from './formula'
 
 // Setting up Game State
 export interface GameState {
@@ -60,6 +61,9 @@ export type GameActions = {
 
 export const reducer = (state: GameState, action: GameActions): GameState => {
     const { type, payload } = action
+
+    const derived = calculateDerived(state)
+
     switch (type) {
         case GameActionKeys.TICK: {
             // Tick Math
@@ -71,15 +75,34 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             const lastTick = state.lastTick + ticks * CONFIGS.SYSTEM.TICK_INTERVAL_MS
 
-            // Actual Game Stuff goes here...
+            // Truck Drivers
+            const newResources = [...state.resources]
+            const truckDriverLevel = getLevel('Truck Driver', state)
+            const garbageCollected = truckDriverLevel
+            const garbageResource = newResources.find((r) => r.name === 'Unsorted Waste')
+            if (garbageResource) garbageResource.amount += garbageCollected
 
-            return { ...state, lastTick }
+            // Organizers
+            for (let i = 0; i < getLevel('Organizer', state); i++) {
+                const unsortedWaste = newResources.find((r) => r.name === 'Unsorted Waste')
+                if (unsortedWaste && unsortedWaste.amount <= 0) break
+                const recyclablesProc = Math.random() < derived.percentRecyclables
+                let drop = 'Garbage'
+                if (recyclablesProc) drop = 'Recyclables'
+                const dropResource = newResources.find((r) => r.name === drop)
+                if (dropResource) dropResource.amount += derived.sortAmount
+                if (unsortedWaste) unsortedWaste.amount -= 1
+            }
+
+            return { ...state, resources: [...newResources], lastTick }
         }
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: string[] = []
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Logistics']
             if (!hasUnlock('Sorting', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.SORTING_PANEL_IN_MONEY)
                 newUnlocks = [...newUnlocks, 'Sorting']
+            if (!hasUnlock('Organizer', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
+                newUnlocks = [...newUnlocks, 'Organizer']
             return {
                 ...state,
                 money: Math.round(Math.max(0, state.money + payload.amount) * 100) / 100,
