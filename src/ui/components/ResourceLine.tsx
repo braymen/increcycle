@@ -3,12 +3,11 @@ import '../styles/App.css'
 interface Props {
     primaryText: string
     amount: number
-    secondaryText?: string
     ratePerSecond?: number // Clicks per second for example
     helperText?: string
 }
 
-function ResourceLine({ primaryText, amount, secondaryText, ratePerSecond, helperText }: Props) {
+function ResourceLine({ primaryText, amount, ratePerSecond, helperText }: Props) {
     return (
         <p>
             <div className="resource-line">

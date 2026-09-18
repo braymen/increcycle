@@ -1,13 +1,34 @@
 import type { GameState } from '../scripts/reducer'
+import { ResourcesJSON } from './resources'
 
 interface Unlock {
     name: string
     description?: string
 }
 
+const resourceUnlocks = ResourcesJSON.map((r) => {
+    return { name: r.name }
+})
+
 export const UnlocksJSON: Unlock[] = [
+    ...resourceUnlocks,
+    {
+        name: 'Money',
+    },
     {
         name: 'Resources',
+    },
+    {
+        name: 'Capacities',
+    },
+    {
+        name: 'Sorting',
+    },
+    {
+        name: 'Logistics',
+    },
+    {
+        name: 'Mass-Burn System',
     },
     {
         name: 'Trashmart',
@@ -16,19 +37,16 @@ export const UnlocksJSON: Unlock[] = [
         name: 'Experiments',
     },
     {
-        name: 'Sorting',
-    },
-    {
-        name: 'Capacities',
-    },
-    {
-        name: 'Mass-Burn System',
-    },
-    {
         name: 'Market',
     },
     {
+        name: 'Policies',
+    },
+    {
         name: 'Achievements',
+    },
+    {
+        name: 'Sort Garbage',
     },
 ]
 

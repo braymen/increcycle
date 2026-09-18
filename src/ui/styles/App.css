@@ -69,6 +69,10 @@ button:active {
     transform: translateY(2px);
 }
 
+button:disabled {
+    opacity: 0.3;
+}
+
 .app-header-container {
     background-color: var(--bg-1);
     padding: 4px 12px;
@@ -172,10 +176,6 @@ button:active {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     align-items: start;
-}
-
-.column:empty {
-    display: none;
 }
 
 .actions {

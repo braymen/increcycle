@@ -5,8 +5,8 @@ function Money() {
     const state = useGameState()
 
     return (
-        <Panel title="Money">
-            <div style={{ fontSize: '48px' }}>${state.money.toFixed(2)}</div>
+        <Panel title="Bank Account">
+            <div style={{ fontSize: '48px' }}>${state.money.toFixed(0)}</div>
         </Panel>
     )
 }

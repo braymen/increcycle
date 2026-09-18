@@ -1,7 +1,7 @@
 import { CONFIGS } from './configs'
-import { ResourcesJSON } from '../content/resources'
+import { getResource, ResourcesJSON } from '../content/resources'
 import { LevelsJSON } from '../content/levels'
-import { UnlocksJSON } from '../content/unlocks'
+import { hasUnlock, UnlocksJSON } from '../content/unlocks'
 
 // Setting up Game State
 export interface GameState {
@@ -66,40 +66,47 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             const { now } = payload
             if (state.lastTick === 0 || now < state.lastTick) return { ...state, lastTick: now }
 
-            const ticks = Math.floor((now - state.lastTick) / CONFIGS.TICK_INTERVAL_MS)
+            const ticks = Math.floor((now - state.lastTick) / CONFIGS.SYSTEM.TICK_INTERVAL_MS)
             if (ticks <= 0) return state
 
-            const lastTick = state.lastTick + ticks * CONFIGS.TICK_INTERVAL_MS
+            const lastTick = state.lastTick + ticks * CONFIGS.SYSTEM.TICK_INTERVAL_MS
 
             // Actual Game Stuff goes here...
 
             return { ...state, lastTick }
         }
         case GameActionKeys.CHANGE_MONEY: {
+            let newUnlocks: string[] = []
+            if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Logistics']
             return {
                 ...state,
                 money: Math.round(Math.max(0, state.money + payload.amount) * 100) / 100,
+                unlocks: [...state.unlocks, ...newUnlocks],
             }
         }
         case GameActionKeys.CHANGE_RESOURCE: {
             if (payload.amount === 0) return state
             if (!ResourcesJSON.find((r) => r.name === payload.key)) return state // Not valid content
+            let newUnlocks: string[] = []
+            if (!hasUnlock('Resources', state)) newUnlocks.push('Resources')
             const existingResource = state.resources.find((r) => r.name === payload.key)
+            if (!hasUnlock(payload.key, state)) newUnlocks.push(payload.key)
+            if (!hasUnlock('Sort Garbage', state) && getResource('Unsorted Waste', state) >= CONFIGS.UNLOCKS.SORT_GARBAGE - 1)
+                newUnlocks.push('Sort Garbage')
             const resources = existingResource
-                ? state.resources.map((r) =>
-                      r.name === payload.key ? { ...r, amount: r.amount + payload.amount } : r,
-                  )
+                ? state.resources.map((r) => (r.name === payload.key ? { ...r, amount: r.amount + payload.amount } : r))
                 : [...state.resources, { name: payload.key as string, amount: payload.amount }]
-            return { ...state, resources }
+            return { ...state, resources, unlocks: [...state.unlocks, ...newUnlocks] }
         }
         case GameActionKeys.CHANGE_LEVEL: {
             if (payload.amount === 0) return state
             if (!LevelsJSON.find((l) => l.name === payload.key)) return state
+            let newUnlocks: string[] = []
             const existingLevel = state.levels.find((l) => l.name === payload.key)
             const levels = existingLevel
                 ? state.levels.map((l) => (l.name === payload.key ? { ...l, amount: l.amount + payload.amount } : l))
                 : [...state.levels, { name: payload.key as string, amount: payload.amount }]
-            return { ...state, levels }
+            return { ...state, levels, unlocks: [...state.unlocks, ...newUnlocks] }
         }
         case GameActionKeys.UNLOCK: {
             if (!UnlocksJSON.find((u) => u.name === payload.key)) return state
