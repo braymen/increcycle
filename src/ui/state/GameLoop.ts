@@ -7,7 +7,7 @@ export const GameLoop = (dispatch: Dispatch<GameActions>) => {
         const tick = () => dispatch({ type: GameActionKeys.TICK, payload: { now: Date.now() } })
         tick()
 
-        const interval = setInterval(tick, CONFIGS.TICK_INTERVAL_MS)
+        const interval = setInterval(tick, CONFIGS.SYSTEM.TICK_INTERVAL_MS)
 
         return () => {
             clearInterval(interval)
