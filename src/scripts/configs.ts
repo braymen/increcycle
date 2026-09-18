@@ -4,6 +4,7 @@ export const CONFIGS = {
         BULK_BUY_AMOUNTS: [1, 10, 100, 1000],
     },
     UNLOCKS: {
-        SORT_GARBAGE: 5,
+        SORT_GARBAGE_IN_UNSORTED_WASTE: 10,
+        SORTING_PANEL_IN_MONEY: 10,
     },
 }

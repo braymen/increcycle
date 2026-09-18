@@ -9,7 +9,7 @@ export interface GameDerived {
 
 export const calculateDerived = (state: GameState): GameDerived => {
     return {
-        percentRecyclables: 0.1,
+        percentRecyclables: 0.2,
         sortAmount: 1,
         recyclablesWorth: 1,
         truckDriverCost: 1,

@@ -17,7 +17,7 @@ function Actions() {
     }, [state.unlocks])
 
     return (
-        <Panel title="Actions (Click them silly)">
+        <Panel title="Actions">
             <div className="actions">
                 <div className="actions-column">
                     <button
@@ -60,7 +60,7 @@ function Actions() {
                                 })
                             }}
                         >
-                            Sell Recyclables For Pennies
+                            Sell Recyclables to Shady Sam
                         </button>
                     </div>
                 )}

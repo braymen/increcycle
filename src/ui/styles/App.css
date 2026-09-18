@@ -185,9 +185,6 @@ button:disabled {
     align-items: start;
 }
 
-.actions-column {
-}
-
 .panel {
     margin-top: 16px;
     background-color: var(--bg-1);

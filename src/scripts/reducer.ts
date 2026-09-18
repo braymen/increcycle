@@ -78,6 +78,8 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: string[] = []
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Logistics']
+            if (!hasUnlock('Sorting', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.SORTING_PANEL_IN_MONEY)
+                newUnlocks = [...newUnlocks, 'Sorting']
             return {
                 ...state,
                 money: Math.round(Math.max(0, state.money + payload.amount) * 100) / 100,
@@ -91,7 +93,10 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             if (!hasUnlock('Resources', state)) newUnlocks.push('Resources')
             const existingResource = state.resources.find((r) => r.name === payload.key)
             if (!hasUnlock(payload.key, state)) newUnlocks.push(payload.key)
-            if (!hasUnlock('Sort Garbage', state) && getResource('Unsorted Waste', state) >= CONFIGS.UNLOCKS.SORT_GARBAGE - 1)
+            if (
+                !hasUnlock('Sort Garbage', state) &&
+                getResource('Unsorted Waste', state) >= CONFIGS.UNLOCKS.SORT_GARBAGE_IN_UNSORTED_WASTE - 1
+            )
                 newUnlocks.push('Sort Garbage')
             const resources = existingResource
                 ? state.resources.map((r) => (r.name === payload.key ? { ...r, amount: r.amount + payload.amount } : r))
