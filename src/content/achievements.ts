@@ -7,7 +7,7 @@ interface Achievement {
     gridSecondaryName: string
 }
 
-export const AchievementsJSON: Achievement[] = [
+export const AchievementsJSON = [
     {
         name: 'Unsorted Trash I',
         description: 'Gather 100 Unsorted Trash',
@@ -20,12 +20,14 @@ export const AchievementsJSON: Achievement[] = [
         gridPrimaryName: 'UT',
         gridSecondaryName: 'II',
     },
-]
+] as const satisfies readonly Achievement[]
 
-export const hasAchievement = (key: string, state: GameState) => {
+export type AchievementKey = (typeof AchievementsJSON)[number]['name']
+
+export const hasAchievement = (key: AchievementKey, state: GameState) => {
     return state.achievements.find((a) => a === key) != null
 }
 
-export const getAchievement = (key: string) => {
+export const getAchievement = (key: AchievementKey) => {
     return AchievementsJSON.find((a) => a.name === key)
 }

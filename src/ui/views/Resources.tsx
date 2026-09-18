@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { getResource, ResourcesJSON } from '../../content/resources'
+import type { Resource } from '../../content/resources'
 import Panel from '../components/Panel'
 import ResourceLine from '../components/ResourceLine'
 import { useGameState } from '../state/GameContext'
@@ -32,7 +33,7 @@ function Resources() {
                         primaryText={r.name}
                         amount={playerResource}
                         ratePerSecond={0}
-                        helperText={r.description}
+                        helperText={(r as Resource).description}
                     />
                 )
             })}

@@ -1,11 +1,11 @@
 import type { GameState } from '../scripts/reducer'
 
-interface Resource {
+export interface Resource {
     name: string
     description?: string
 }
 
-export const ResourcesJSON: Resource[] = [
+export const ResourcesJSON = [
     {
         name: 'Unsorted Waste',
         description: 'Municiple trash that needs organizing.',
@@ -45,8 +45,10 @@ export const ResourcesJSON: Resource[] = [
     {
         name: 'Power',
     },
-]
+] as const satisfies readonly Resource[]
 
-export const getResource = (key: string, state: GameState) => {
+export type ResourceKey = (typeof ResourcesJSON)[number]['name']
+
+export const getResource = (key: ResourceKey, state: GameState) => {
     return state.resources.find((r) => r.name === key)?.amount || 0
 }

@@ -5,15 +5,17 @@ interface Level {
     description?: string
 }
 
-export const LevelsJSON: Level[] = [
+export const LevelsJSON = [
     {
         name: 'Truck Driver',
     },
     {
         name: 'Organizer',
     },
-]
+] as const satisfies readonly Level[]
 
-export const getLevel = (key: string, state: GameState) => {
+export type LevelKey = (typeof LevelsJSON)[number]['name']
+
+export const getLevel = (key: LevelKey, state: GameState) => {
     return state.levels.find((l) => l.name === key)?.amount || 0
 }

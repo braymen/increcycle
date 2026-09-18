@@ -1,17 +1,17 @@
 import type { GameState } from '../scripts/reducer'
 import { ResourcesJSON } from './resources'
+import type { ResourceKey } from './resources'
 
 interface Unlock {
     name: string
     description?: string
 }
 
-const resourceUnlocks = ResourcesJSON.map((r) => {
+const resourceUnlocks: readonly Unlock[] = ResourcesJSON.map((r) => {
     return { name: r.name }
 })
 
-export const UnlocksJSON: Unlock[] = [
-    ...resourceUnlocks,
+const otherUnlocks = [
     {
         name: 'Money',
     },
@@ -54,8 +54,12 @@ export const UnlocksJSON: Unlock[] = [
     {
         name: 'Employee Costs',
     },
-]
+] as const satisfies readonly Unlock[]
 
-export const hasUnlock = (key: string, state: GameState) => {
+export const UnlocksJSON: readonly Unlock[] = [...resourceUnlocks, ...otherUnlocks]
+
+export type UnlockKey = ResourceKey | (typeof otherUnlocks)[number]['name']
+
+export const hasUnlock = (key: UnlockKey, state: GameState) => {
     return state.unlocks.includes(key)
 }

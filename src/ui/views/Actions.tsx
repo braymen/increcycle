@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { getResource } from '../../content/resources'
+import { getResource, type ResourceKey } from '../../content/resources'
 import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { hasUnlock } from '../../content/unlocks'
@@ -34,7 +34,7 @@ function Actions() {
                             style={{ width: '100%' }}
                             onClick={() => {
                                 const recyclablesProc = Math.random() < derived.percentRecyclables
-                                let drop = 'Garbage'
+                                let drop: ResourceKey = 'Garbage'
                                 if (recyclablesProc) drop = 'Recyclables'
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: derived.sortAmount, key: drop } })
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: -1, key: 'Unsorted Waste' } })

@@ -1,7 +1,7 @@
 import { CONFIGS } from './configs'
-import { getResource, ResourcesJSON } from '../content/resources'
-import { getLevel, LevelsJSON } from '../content/levels'
-import { hasUnlock, UnlocksJSON } from '../content/unlocks'
+import { getResource, ResourcesJSON, type ResourceKey } from '../content/resources'
+import { getLevel, LevelsJSON, type LevelKey } from '../content/levels'
+import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 
 // Setting up Game State
@@ -48,9 +48,9 @@ export const GameActionKeys = {
 type GameActionPayloads = {
     [GameActionKeys.TICK]: { now: number }
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
-    [GameActionKeys.CHANGE_RESOURCE]: { key: string; amount: number }
-    [GameActionKeys.CHANGE_LEVEL]: { key: string; amount: number }
-    [GameActionKeys.UNLOCK]: { key: string }
+    [GameActionKeys.CHANGE_RESOURCE]: { key: ResourceKey; amount: number }
+    [GameActionKeys.CHANGE_LEVEL]: { key: LevelKey; amount: number }
+    [GameActionKeys.UNLOCK]: { key: UnlockKey }
 }
 
 // Action Typing
