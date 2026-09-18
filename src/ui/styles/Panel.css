@@ -1,0 +1,15 @@
+.panel {
+    margin-top: 16px;
+    background-color: var(--bg-1);
+    color: var(--text-color-light);
+    padding: 14px 8px;
+}
+
+.panel-header {
+    padding: 5px 14px;
+    color: var(--text-color-light);
+}
+
+.panel-container {
+    padding: 0px 14px;
+}

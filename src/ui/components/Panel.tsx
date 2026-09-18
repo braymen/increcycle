@@ -8,7 +8,7 @@ interface Props {
 
 function Panel({ title, children }: Props) {
     return (
-        <div className="panel">
+        <div className={'panel ' + (title !== 'Actions' && 'fade-in')}>
             <h2 className="panel-header">{title}</h2>
             <div className="panel-container">{children}</div>
         </div>

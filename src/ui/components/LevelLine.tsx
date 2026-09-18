@@ -9,7 +9,7 @@ interface Props {
 
 function LevelLine({ title, price, canAfford, callback }: Props) {
     return (
-        <div className="level-line">
+        <div className="level-line  fade-in">
             <div className="level-line-title">{title}</div>
             <div className="level-line-button">
                 <button disabled={!canAfford} onClick={() => callback()}>

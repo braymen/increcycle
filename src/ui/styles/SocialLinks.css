@@ -1,0 +1,21 @@
+.social-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-light);
+}
+
+.social-link:hover {
+    color: var(--text-color-light);
+    opacity: 0.8;
+}
+
+.social-link svg {
+    display: block;
+}

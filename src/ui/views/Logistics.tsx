@@ -59,7 +59,7 @@ function Logistics() {
                     />
                 )}
                 {unlocks.employeeCosts && (
-                    <div className="level-line" style={{ paddingTop: '10px', borderTop: '1px solid #ffffff55' }}>
+                    <div className="level-line  fade-in" style={{ paddingTop: '10px', borderTop: '1px solid #ffffff55' }}>
                         <div className="level-line-title">
                             Employee Costs{' '}
                             <span

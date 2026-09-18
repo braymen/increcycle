@@ -1,0 +1,31 @@
+.resource-line {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    gap: 8px;
+}
+
+.resource-line-left {
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.resource-line-dots {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 1em;
+    overflow: hidden;
+    word-wrap: break-word;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+}
+
+.resource-line-dots:after {
+    content: '...........................................................';
+}
+
+.resource-line-right {
+    white-space: nowrap;
+    flex-shrink: 0;
+}

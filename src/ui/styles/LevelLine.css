@@ -1,0 +1,19 @@
+.level-lines-container {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.level-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.level-line-title {
+    flex: 1;
+}
+
+/* .level-line-button {
+} */

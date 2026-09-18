@@ -28,7 +28,7 @@ function Actions() {
                     </button>
                 </div>
                 {unlocks.sortAction && (
-                    <div className="actions-column">
+                    <div className="actions-column  fade-in">
                         <button
                             disabled={getResource('Unsorted Waste', state) <= 0}
                             style={{ width: '100%' }}
@@ -45,7 +45,7 @@ function Actions() {
                     </div>
                 )}
                 {unlocks.sellRecyclablesAction && (
-                    <div className="actions-column">
+                    <div className="actions-column  fade-in">
                         <button
                             disabled={getResource('Recyclables', state) <= 0}
                             style={{ width: '100%' }}

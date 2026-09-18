@@ -79,7 +79,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             const employeeCosts = derived.employeeCosts
             const newResources = [...state.resources]
             let newMoney = (state.money / 100) * 100 // rounding fix?
-            if (employeeCosts <= newMoney) {
+            if (employeeCosts <= newMoney || !hasUnlock('Employee Costs', state)) {
                 if (hasUnlock('Employee Costs', state)) newMoney -= employeeCosts
                 // Truck Drivers
                 const truckDriverLevel = getLevel('Truck Driver', state)

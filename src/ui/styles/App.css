@@ -18,61 +18,6 @@
     opacity: 0.7;
 }
 
-html,
-body {
-    color: var(--text-color-light);
-    background-color: var(--bg-2);
-    -webkit-user-select: none;
-    user-select: none;
-    margin: 0;
-}
-
-img {
-    -webkit-user-drag: none;
-    pointer-events: none;
-}
-
-h1 {
-    padding: 0;
-    margin: 0;
-}
-
-h2 {
-    padding: 4px 0;
-    margin: 0;
-    color: var(--text-muted) !important;
-    font-size: 14px;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-p {
-    padding: 4px 0;
-    margin: 0;
-}
-
-button {
-    background-color: var(--button-color);
-    color: var(--text-color-light);
-    padding: 8px 20px;
-    border: none;
-    font-weight: 800;
-}
-
-button:hover {
-    background-color: var(--button-color-hover);
-    cursor: pointer;
-}
-
-button:active {
-    background-color: var(--button-color);
-    transform: translateY(2px);
-}
-
-button:disabled {
-    opacity: 0.3;
-}
-
 .app-header-container {
     background-color: var(--bg-1);
     padding: 4px 12px;
@@ -143,28 +88,6 @@ button:disabled {
     background-color: var(--text-muted);
 }
 
-.social-links {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color-light);
-}
-
-.social-link:hover {
-    color: var(--text-color-light);
-    opacity: 0.8;
-}
-
-.social-link svg {
-    display: block;
-}
-
 .content-container {
     max-width: 1440px;
     margin-inline: auto;
@@ -183,114 +106,6 @@ button:disabled {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 8px;
     align-items: start;
-}
-
-.panel {
-    margin-top: 16px;
-    background-color: var(--bg-1);
-    color: var(--text-color-light);
-    padding: 14px 8px;
-}
-
-.panel-header {
-    padding: 5px 14px;
-    color: var(--text-color-light);
-}
-
-.panel-container {
-    padding: 0px 14px;
-}
-
-.help-marker {
-    display: inline-block;
-    position: relative;
-    color: var(--text-muted);
-}
-
-.help-marker:hover {
-    cursor: help;
-}
-
-.help-marker[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    margin-bottom: 2px;
-    z-index: 1;
-    width: max-content;
-    max-width: min(200px, calc(100vw - 32px));
-    white-space: normal;
-    padding: 4px 8px;
-    padding-bottom: 8px;
-    border: 2px solid #65857a;
-    background-color: var(--bg-1);
-    color: var(--text-color-light);
-    font-size: 16px;
-}
-
-.help-marker[data-tooltip-align~='left']:hover::after {
-    left: auto;
-    right: 0;
-}
-
-.help-marker[data-tooltip-align~='bottom']:hover::after {
-    top: 100%;
-    bottom: auto;
-    margin-top: 2px;
-    margin-bottom: 0;
-}
-
-.resource-line {
-    display: flex;
-    align-items: baseline;
-    width: 100%;
-    gap: 8px;
-}
-
-.resource-line-left {
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.resource-line-dots {
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 1em;
-    overflow: hidden;
-    word-wrap: break-word;
-    color: var(--text-muted);
-    letter-spacing: 3px;
-}
-
-.resource-line-dots:after {
-    content: '...........................................................';
-}
-
-.resource-line-right {
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.level-lines-container {
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
-}
-
-.level-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.level-line-title {
-    flex: 1;
-}
-
-.level-line-button {
 }
 
 @media (max-width: 1024px) {
@@ -322,42 +137,4 @@ button:disabled {
     .player-count {
         display: none;
     }
-}
-
-/* Copied straight from stackoverflow...  */
-/* https://stackoverflow.com/questions/6410730/css-endless-rotation-animation */
-@-webkit-keyframes rotating /* Safari and Chrome */ {
-    from {
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@keyframes rotating {
-    from {
-        -ms-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    to {
-        -ms-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-.rotating {
-    -webkit-animation: rotating 4s linear infinite;
-    -moz-animation: rotating 4s linear infinite;
-    -ms-animation: rotating 4s linear infinite;
-    -o-animation: rotating 4s linear infinite;
-    animation: rotating 4s linear infinite;
 }
