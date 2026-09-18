@@ -10,7 +10,15 @@ function Resources() {
         <Panel title="Resources">
             {ResourcesJSON.map((r) => {
                 const playerResource = getResource(r.name, state)
-                return <ResourceLine primaryText={r.name} amount={playerResource} ratePerSecond={0} helperText={r.description} />
+                return (
+                    <ResourceLine
+                        key={'resourceline-' + r.name}
+                        primaryText={r.name}
+                        amount={playerResource}
+                        ratePerSecond={0}
+                        helperText={r.description}
+                    />
+                )
             })}
         </Panel>
     )

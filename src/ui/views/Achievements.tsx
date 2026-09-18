@@ -14,7 +14,12 @@ function Achievements() {
                     const achieved = hasAchievement(achievement.name, state)
 
                     return (
-                        <span className="help-marker" data-tooltip={achievement.description} data-tooltip-align="">
+                        <span
+                            key={'achievement-' + achievement.name}
+                            className="help-marker"
+                            data-tooltip={achievement.description}
+                            data-tooltip-align=""
+                        >
                             <div
                                 style={{
                                     width: gridSize,

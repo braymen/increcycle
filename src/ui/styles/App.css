@@ -178,6 +178,16 @@ button:active {
     display: none;
 }
 
+.actions {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 8px;
+    align-items: start;
+}
+
+.actions-column {
+}
+
 .panel {
     margin-top: 16px;
     background-color: var(--bg-1);

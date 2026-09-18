@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
 import '../styles/App.css'
-import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
-import ShopItem from '../components/ShopItem'
-import SocialLinks from '../components/SocialLinks'
-import { CONFIGS } from '../../scripts/configs'
 import Navbar from './Navbar'
 import Resources from './Resources'
 import Actions from './Actions'
@@ -21,9 +17,6 @@ import Money from './Money'
 import Policies from './Policies'
 
 function App() {
-    const state = useGameState()
-    const derived = useGameDerived()
-    const dispatch = useGameDispatch()
     const [settings, setSettings] = useState(false)
 
     const showSettings = () => setSettings(!settings)

@@ -7,12 +7,6 @@ interface Resource {
 
 export const ResourcesJSON: Resource[] = [
     {
-        name: 'Bottles',
-    },
-    {
-        name: 'Gas',
-    },
-    {
         name: 'Unsorted Waste',
         description: 'Most basic form of municiple waste',
     },
@@ -21,6 +15,9 @@ export const ResourcesJSON: Resource[] = [
     },
     {
         name: 'Recyclables',
+    },
+    {
+        name: 'Gas',
     },
     {
         name: 'Paper',

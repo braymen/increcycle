@@ -1,7 +1,7 @@
 import Panel from '../components/Panel'
 
 function Experiments() {
-    return <Panel title="Experiments"></Panel>
+    return <Panel title="Shady Experiments"></Panel>
 }
 
 export default Experiments
