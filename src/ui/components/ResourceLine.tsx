@@ -14,7 +14,7 @@ function ResourceLine({ primaryText, amount, ratePerSecond, helperText }: Props)
                 <div className="resource-line-left">
                     {primaryText}{' '}
                     {helperText && (
-                        <span className="help-marker" data-tooltip="As you pick up cans, you use up a bag." data-tooltip-align="">
+                        <span className="help-marker" data-tooltip={helperText} data-tooltip-align="">
                             (?)
                         </span>
                     )}

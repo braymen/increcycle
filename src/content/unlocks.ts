@@ -51,6 +51,9 @@ export const UnlocksJSON: Unlock[] = [
     {
         name: 'Organizer',
     },
+    {
+        name: 'Employee Costs',
+    },
 ]
 
 export const hasUnlock = (key: string, state: GameState) => {

@@ -75,26 +75,32 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             const lastTick = state.lastTick + ticks * CONFIGS.SYSTEM.TICK_INTERVAL_MS
 
-            // Truck Drivers
+            // Calculate employees
+            const employeeCosts = derived.employeeCosts
             const newResources = [...state.resources]
-            const truckDriverLevel = getLevel('Truck Driver', state)
-            const garbageCollected = truckDriverLevel
-            const garbageResource = newResources.find((r) => r.name === 'Unsorted Waste')
-            if (garbageResource) garbageResource.amount += garbageCollected
+            let newMoney = (state.money / 100) * 100 // rounding fix?
+            if (employeeCosts <= newMoney) {
+                if (hasUnlock('Employee Costs', state)) newMoney -= employeeCosts
+                // Truck Drivers
+                const truckDriverLevel = getLevel('Truck Driver', state)
+                const garbageCollected = truckDriverLevel
+                const garbageResource = newResources.find((r) => r.name === 'Unsorted Waste')
+                if (garbageResource) garbageResource.amount += garbageCollected
 
-            // Organizers
-            for (let i = 0; i < getLevel('Organizer', state); i++) {
-                const unsortedWaste = newResources.find((r) => r.name === 'Unsorted Waste')
-                if (unsortedWaste && unsortedWaste.amount <= 0) break
-                const recyclablesProc = Math.random() < derived.percentRecyclables
-                let drop = 'Garbage'
-                if (recyclablesProc) drop = 'Recyclables'
-                const dropResource = newResources.find((r) => r.name === drop)
-                if (dropResource) dropResource.amount += derived.sortAmount
-                if (unsortedWaste) unsortedWaste.amount -= 1
+                // Organizers
+                for (let i = 0; i < getLevel('Organizer', state); i++) {
+                    const unsortedWaste = newResources.find((r) => r.name === 'Unsorted Waste')
+                    if (unsortedWaste && unsortedWaste.amount <= 0) break
+                    const recyclablesProc = Math.random() < derived.percentRecyclables
+                    let drop = 'Garbage'
+                    if (recyclablesProc) drop = 'Recyclables'
+                    const dropResource = newResources.find((r) => r.name === drop)
+                    if (dropResource) dropResource.amount += derived.sortAmount
+                    if (unsortedWaste) unsortedWaste.amount -= 1
+                }
             }
 
-            return { ...state, resources: [...newResources], lastTick }
+            return { ...state, money: newMoney, resources: [...newResources], lastTick }
         }
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: string[] = []

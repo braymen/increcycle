@@ -6,7 +6,7 @@ function Money() {
 
     return (
         <Panel title="Bank Account">
-            <div style={{ fontSize: '48px' }}>${state.money.toFixed(0)}</div>
+            <div style={{ fontSize: '48px' }}>${state.money.toFixed(2)}</div>
         </Panel>
     )
 }

@@ -1,9 +1,10 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import LevelLine from '../components/LevelLine'
 import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { getLevel } from '../../content/levels'
 import { hasUnlock } from '../../content/unlocks'
+import { CONFIGS } from '../../scripts/configs'
 
 function Logistics() {
     const state = useGameState()
@@ -19,9 +20,20 @@ function Logistics() {
     const unlocks = useMemo(() => {
         return {
             organizer: hasUnlock('Organizer', state),
+            employeeCosts: hasUnlock('Employee Costs', state),
         }
         // oxlint-disable-next-line react-hooks/exhaustive-deps
     }, [state.unlocks])
+
+    useEffect(() => {
+        if (
+            !hasUnlock('Employee Costs', state) &&
+            getLevel('Truck Driver', state) + getLevel('Organizer', state) >= CONFIGS.UNLOCKS.TOTAL_EMPLOYEES_FOR_COST
+        ) {
+            dispatch({ type: 'UNLOCK', payload: { key: 'Employee Costs' } })
+        }
+        // oxlint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.levels])
 
     return (
         <Panel title="Logistics">
@@ -45,6 +57,23 @@ function Logistics() {
                             dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.organizerCost } })
                         }}
                     />
+                )}
+                {unlocks.employeeCosts && (
+                    <div className="level-line" style={{ paddingTop: '10px', borderTop: '1px solid #ffffff55' }}>
+                        <div className="level-line-title">
+                            Employee Costs{' '}
+                            <span
+                                className="help-marker"
+                                data-tooltip="Employees are not free... Each employee costs $0.10 a second. If you run out of money, they stop."
+                                data-tooltip-align=""
+                            >
+                                (?)
+                            </span>
+                        </div>
+                        <div className="level-line-button" style={{ color: '#dc9b9b' }}>
+                            -${derived.employeeCosts.toFixed(2)}/s
+                        </div>
+                    </div>
                 )}
             </div>
         </Panel>

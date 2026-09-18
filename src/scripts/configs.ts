@@ -7,5 +7,6 @@ export const CONFIGS = {
         SORT_GARBAGE_IN_UNSORTED_WASTE: 10,
         SORTING_PANEL_IN_MONEY: 25,
         ORGANIZER_LOGISTIC: 5,
+        TOTAL_EMPLOYEES_FOR_COST: 5,
     },
 }
