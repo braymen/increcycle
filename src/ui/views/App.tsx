@@ -37,6 +37,14 @@ function App() {
         return () => clearSoundEvents()
     }, [])
 
+    useEffect(() => {
+        const disableEnterRepeat = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' && e.repeat) e.preventDefault()
+        }
+        document.addEventListener('keydown', disableEnterRepeat, { capture: true })
+        return () => document.removeEventListener('keydown', disableEnterRepeat, { capture: true })
+    }, [])
+
     const unlocks = useMemo(() => {
         return {
             money: hasUnlock('Money', state),

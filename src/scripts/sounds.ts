@@ -1,6 +1,7 @@
 var context = new window.AudioContext()
 
 const clickSound = (event: PointerEvent) => {
+    if (!event.isTrusted) return // Skip programmatic clicks (e.g. automated actions)
     if (!(event.target instanceof Element)) return
     const button = event.target.closest('button')
     if (!button) return

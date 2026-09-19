@@ -37,6 +37,7 @@ button {
     padding: 8px 20px;
     border: none;
     font-weight: 800;
+    position: relative;
 }
 
 button:hover {
@@ -44,7 +45,8 @@ button:hover {
     cursor: pointer;
 }
 
-button:active {
+button:active,
+button.pressed {
     background-color: var(--button-color);
     transform: translateY(2px);
 }

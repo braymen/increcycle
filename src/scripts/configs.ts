@@ -1,6 +1,7 @@
 export const CONFIGS = {
     SYSTEM: {
         TICK_INTERVAL_MS: 1000,
+        FAST_TICK_INTERVAL_MS: 40,
         BULK_BUY_AMOUNTS: [1, 10, 100, 1000],
     },
     UNLOCKS: {

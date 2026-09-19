@@ -3,11 +3,13 @@ import { getResource, ResourcesJSON, type ResourceKey } from '../content/resourc
 import { getLevel, LevelsJSON, type LevelKey } from '../content/levels'
 import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
+import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
 
 // Setting up Game State
 export interface GameState {
     version: number
     lastTick: number
+    lastFastTick: number
     lastSave: number
     money: number
     resources: {
@@ -20,37 +22,50 @@ export interface GameState {
     }[]
     unlocks: string[]
     achievements: string[]
+    actionProgress: {
+        id: string
+        progress: number
+    }
 }
 
 export const initialState = (): GameState => {
     return {
         version: 0,
         lastTick: 0,
+        lastFastTick: 0,
         lastSave: 0,
         money: 0,
         resources: [],
         levels: [],
         unlocks: [],
         achievements: ['Unsorted Trash I'],
+        actionProgress: {
+            id: '',
+            progress: 0,
+        },
     }
 }
 
 // Action Types
 export const GameActionKeys = {
     TICK: 'TICK',
+    FAST_TICK: 'FAST_TICK',
     CHANGE_MONEY: 'CHANGE_MONEY',
     CHANGE_RESOURCE: 'CHANGE_RESOURCE',
     CHANGE_LEVEL: 'CHANGE_LEVEL',
     UNLOCK: 'UNLOCK',
+    CHANGE_ACTION: 'CHANGE_ACTION',
 } as const
 
 // Action Payloads
 type GameActionPayloads = {
     [GameActionKeys.TICK]: { now: number }
+    [GameActionKeys.FAST_TICK]: { now: number }
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
     [GameActionKeys.CHANGE_RESOURCE]: { key: ResourceKey; amount: number }
     [GameActionKeys.CHANGE_LEVEL]: { key: LevelKey; amount: number }
     [GameActionKeys.UNLOCK]: { key: UnlockKey }
+    [GameActionKeys.CHANGE_ACTION]: { key: ProgressActionKey }
 }
 
 // Action Typing
@@ -102,6 +117,35 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             return { ...state, money: newMoney, resources: [...newResources], lastTick }
         }
+        case GameActionKeys.FAST_TICK: {
+            // Tick Math
+            const { now } = payload
+            if (state.lastFastTick === 0 || now < state.lastFastTick) return { ...state, lastFastTick: now }
+
+            const ticks = Math.floor((now - state.lastFastTick) / CONFIGS.SYSTEM.FAST_TICK_INTERVAL_MS)
+            if (ticks <= 0) return state
+
+            const lastFastTick = state.lastFastTick + ticks * CONFIGS.SYSTEM.FAST_TICK_INTERVAL_MS
+
+            // Action Progress
+            if (state.actionProgress.id !== '') {
+                state.actionProgress.progress += ticks * 5
+                if (state.actionProgress.progress >= 100) {
+                    state.actionProgress.progress = 0
+                    const elementId = 'progress-action-key-' + state.actionProgress.id
+                    const button = document.getElementById(elementId)
+                    if (button) {
+                        button.click()
+                        button.classList.add('pressed')
+                        setTimeout(() => button.classList.remove('pressed'), 100)
+                    }
+                }
+            }
+
+            console.log()
+
+            return { ...state, lastFastTick }
+        }
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: string[] = []
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Logistics']
@@ -146,6 +190,19 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             if (!UnlocksJSON.find((u) => u.name === payload.key)) return state
             if (state.unlocks.includes(payload.key as string)) return state
             return { ...state, unlocks: [...state.unlocks, payload.key as string] }
+        }
+        case GameActionKeys.CHANGE_ACTION: {
+            if (payload.key === '') {
+                return { ...state, actionProgress: initialState().actionProgress }
+            } else {
+                return {
+                    ...state,
+                    actionProgress: {
+                        id: payload.key,
+                        progress: 0,
+                    },
+                }
+            }
         }
         default:
             return state

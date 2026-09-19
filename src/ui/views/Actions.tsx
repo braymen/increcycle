@@ -3,6 +3,7 @@ import { getResource, type ResourceKey } from '../../content/resources'
 import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { hasUnlock } from '../../content/unlocks'
+import ProgressActionButton from '../components/ProgressActionButton'
 
 function Actions() {
     const dispatch = useGameDispatch()
@@ -20,28 +21,33 @@ function Actions() {
         <Panel title="Actions">
             <div className="actions">
                 <div className="actions-column">
-                    <button
-                        style={{ width: '100%' }}
-                        onClick={() => dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'Unsorted Waste', amount: 1 } })}
-                    >
-                        Steal Garbage From House
-                    </button>
+                    <ProgressActionButton
+                        text="Steal Garbage From House"
+                        progress={50}
+                        callback={() => {
+                            dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'Unsorted Waste', amount: 1 } })
+                            dispatch({ type: 'CHANGE_ACTION', payload: { key: 'steal' } })
+                        }}
+                        disabled={false}
+                        progressActionKey="steal"
+                    />
                 </div>
                 {unlocks.sortAction && (
                     <div className="actions-column  fade-in">
-                        <button
+                        <ProgressActionButton
+                            text="Sift Through Garbage"
                             disabled={getResource('Unsorted Waste', state) <= 0}
-                            style={{ width: '100%' }}
-                            onClick={() => {
+                            progress={50}
+                            callback={() => {
                                 const recyclablesProc = Math.random() < derived.percentRecyclables
                                 let drop: ResourceKey = 'Garbage'
                                 if (recyclablesProc) drop = 'Recyclables'
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: derived.sortAmount, key: drop } })
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: -1, key: 'Unsorted Waste' } })
+                                dispatch({ type: 'CHANGE_ACTION', payload: { key: 'sift' } })
                             }}
-                        >
-                            Sift Through Garbage
-                        </button>
+                            progressActionKey="sift"
+                        />
                     </div>
                 )}
                 {unlocks.sellRecyclablesAction && (
