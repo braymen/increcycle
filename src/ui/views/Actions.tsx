@@ -4,6 +4,10 @@ import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { hasUnlock } from '../../content/unlocks'
 import ProgressActionButton from '../components/ProgressActionButton'
+import stealTrashIcon from '../assets/steal-trash.svg'
+import siftTrashIcon from '../assets/sift-trash.svg'
+import sellRecyclablesIcon from '../assets/sell-recyclables.svg'
+import dumpOceanIcon from '../assets/dump-ocean.svg'
 
 function Actions() {
     const dispatch = useGameDispatch()
@@ -13,6 +17,7 @@ function Actions() {
         return {
             sortAction: hasUnlock('Sort Garbage', state),
             sellRecyclablesAction: hasUnlock('Recyclables', state),
+            dumpGarbageAction: hasUnlock('Dump Garbage', state),
         }
         // oxlint-disable-next-line react-hooks/exhaustive-deps
     }, [state.unlocks])
@@ -23,12 +28,12 @@ function Actions() {
                 <div className="actions-column">
                     <ProgressActionButton
                         text="Steal Garbage From House"
-                        progress={50}
+                        icon={stealTrashIcon}
                         callback={() => {
                             dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'Unsorted Waste', amount: 1 } })
                             dispatch({ type: 'CHANGE_ACTION', payload: { key: 'steal' } })
                         }}
-                        disabled={false}
+                        disabled={derived.unsortedFull}
                         progressActionKey="steal"
                     />
                 </div>
@@ -36,8 +41,8 @@ function Actions() {
                     <div className="actions-column  fade-in">
                         <ProgressActionButton
                             text="Sift Through Garbage"
-                            disabled={getResource('Unsorted Waste', state) <= 0}
-                            progress={50}
+                            icon={siftTrashIcon}
+                            disabled={getResource('Unsorted Waste', state) <= 0 || derived.garbageFull}
                             callback={() => {
                                 const recyclablesProc = Math.random() < derived.percentRecyclables
                                 let drop: ResourceKey = 'Garbage'
@@ -66,8 +71,25 @@ function Actions() {
                                 })
                             }}
                         >
-                            Sell Recyclables to Shady Sam
+                            <span className="action-button-label">
+                                <img className="action-button-icon" src={sellRecyclablesIcon} />
+                                Sell Recyclables to Shady Sam
+                            </span>
                         </button>
+                    </div>
+                )}
+                {unlocks.dumpGarbageAction && (
+                    <div className="actions-column  fade-in">
+                        <ProgressActionButton
+                            text="Dump Garbage in Ocean"
+                            icon={dumpOceanIcon}
+                            disabled={getResource('Garbage', state) <= 0}
+                            callback={() => {
+                                dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: -1, key: 'Garbage' } })
+                                dispatch({ type: 'CHANGE_ACTION', payload: { key: 'dump' } })
+                            }}
+                            progressActionKey="dump"
+                        />
                     </div>
                 )}
             </div>

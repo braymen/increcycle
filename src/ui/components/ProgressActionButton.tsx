@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react'
 import '../styles/App.css'
 import { useGameState } from '../state/GameContext'
 
-export type ProgressActionKey = '' | 'steal' | 'sift'
+export type ProgressActionKey = '' | 'steal' | 'sift' | 'dump'
 
 interface Props {
     text: string
-    progress: number
     callback: Function
     disabled: boolean
     progressActionKey: ProgressActionKey
+    icon?: string
 }
 
-function ProgressActionButton({ text, callback, disabled, progressActionKey }: Props) {
+function ProgressActionButton({ text, callback, disabled, progressActionKey, icon }: Props) {
     const state = useGameState()
     const focusing = state.actionProgress.id === progressActionKey
 
@@ -23,7 +22,10 @@ function ProgressActionButton({ text, callback, disabled, progressActionKey }: P
             style={{ width: '100%' }}
             onClick={() => callback()}
         >
-            {text}
+            <span className="action-button-label">
+                {icon && <img className="action-button-icon" src={icon} />}
+                {text}
+            </span>
             {focusing && !disabled && (
                 <div>
                     <div

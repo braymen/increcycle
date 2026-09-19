@@ -10,4 +10,8 @@ export const CONFIGS = {
         ORGANIZER_LOGISTIC: 5,
         TOTAL_EMPLOYEES_FOR_COST: 5,
     },
+    BALANCE: {
+        BASE_GARBAGE_CAPACITY: 100,
+        BASE_UNSORTED_CAPACITY: 1000,
+    },
 }

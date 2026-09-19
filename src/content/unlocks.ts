@@ -54,6 +54,9 @@ const otherUnlocks = [
     {
         name: 'Employee Costs',
     },
+    {
+        name: 'Dump Garbage',
+    },
 ] as const satisfies readonly Unlock[]
 
 export const UnlocksJSON: readonly Unlock[] = [...resourceUnlocks, ...otherUnlocks]
