@@ -64,7 +64,7 @@ function Logistics() {
                             Employee Costs{' '}
                             <span
                                 className="help-marker"
-                                data-tooltip="Employees are not free... Each employee costs $0.10 a second. If you run out of money, they stop."
+                                data-tooltip={`Employees are not free... Each employee costs $0.01 a second. If you run out of money, they stop.`}
                                 data-tooltip-align=""
                             >
                                 (?)

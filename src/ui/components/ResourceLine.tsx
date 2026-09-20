@@ -3,7 +3,7 @@ import '../styles/App.css'
 interface Props {
     primaryText: string
     amount: number
-    ratePerSecond?: number // Clicks per second for example
+    ratePerSecond: number // Clicks per second for example
     helperText?: string
 }
 
@@ -29,7 +29,8 @@ function ResourceLine({ primaryText, amount, ratePerSecond, helperText }: Props)
                             color: !ratePerSecond ? '#afc0ba' : ratePerSecond > 0 ? '#afc0ba' : '#dc9b9b',
                         }}
                     >
-                        ( {ratePerSecond}/sec )
+                        {ratePerSecond >= 0 ? '+' : ''}
+                        {ratePerSecond}/sec
                     </span>
                 </div>
             </div>
