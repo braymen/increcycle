@@ -1,7 +1,7 @@
 import '../styles/App.css'
 import { useGameState } from '../state/GameContext'
 
-export type ProgressActionKey = '' | 'steal' | 'sift' | 'dump'
+export type ProgressActionKey = '' | 'steal' | 'sift'
 
 interface Props {
     text: string

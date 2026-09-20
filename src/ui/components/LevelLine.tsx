@@ -12,7 +12,7 @@ function LevelLine({ title, price, canAfford, callback }: Props) {
         <div className="level-line  fade-in">
             <div className="level-line-title">{title}</div>
             <div className="level-line-button">
-                <button disabled={!canAfford} onClick={() => callback()}>
+                <button className="button-yellow" disabled={!canAfford} onClick={() => callback()}>
                     Buy ${price}
                 </button>
             </div>

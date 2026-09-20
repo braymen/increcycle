@@ -54,3 +54,31 @@ button.pressed {
 button:disabled {
     opacity: 0.3;
 }
+
+.button-blue {
+    background-color: rgb(0, 126, 130);
+    color: var(--text-color-light);
+}
+
+.button-blue:hover {
+    background-color: rgb(0, 144, 149);
+}
+
+.button-blue:active,
+.button-blue.pressed {
+    background-color: rgb(0, 126, 130);
+}
+
+.button-yellow {
+    background-color: rgb(130, 117, 0);
+    color: var(--text-color-light);
+}
+
+.button-yellow:hover {
+    background-color: rgb(149, 134, 0);
+}
+
+.button-yellow:active,
+.button-yellow.pressed {
+    background-color: rgb(130, 117, 0);
+}

@@ -23,8 +23,11 @@ export interface GameState {
     unlocks: string[]
     achievements: string[]
     actionProgress: {
-        id: string
+        id: ProgressActionKey
         progress: number
+    }
+    trackers: {
+        oceanGarbage: number
     }
 }
 
@@ -43,8 +46,14 @@ export const initialState = (): GameState => {
             id: '',
             progress: 0,
         },
+        trackers: {
+            oceanGarbage: 0,
+        },
     }
 }
+
+// Tracker Typing
+export type TrackerKeys = keyof GameState['trackers']
 
 // Action Types
 export const GameActionKeys = {
@@ -55,6 +64,7 @@ export const GameActionKeys = {
     CHANGE_LEVEL: 'CHANGE_LEVEL',
     UNLOCK: 'UNLOCK',
     CHANGE_ACTION: 'CHANGE_ACTION',
+    CHANGE_TRACKER: 'CHANGE_TRACKER',
 } as const
 
 // Action Payloads
@@ -66,6 +76,7 @@ type GameActionPayloads = {
     [GameActionKeys.CHANGE_LEVEL]: { key: LevelKey; amount: number }
     [GameActionKeys.UNLOCK]: { key: UnlockKey }
     [GameActionKeys.CHANGE_ACTION]: { key: ProgressActionKey }
+    [GameActionKeys.CHANGE_TRACKER]: { key: TrackerKeys; amount: number }
 }
 
 // Action Typing
@@ -216,6 +227,15 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                         progress: 0,
                     },
                 }
+            }
+        }
+        case GameActionKeys.CHANGE_TRACKER: {
+            return {
+                ...state,
+                trackers: {
+                    ...state.trackers,
+                    [payload.key]: state.trackers[payload.key] + payload.amount,
+                },
             }
         }
         default:

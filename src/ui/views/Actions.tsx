@@ -58,6 +58,7 @@ function Actions() {
                 {unlocks.sellRecyclablesAction && (
                     <div className="actions-column  fade-in">
                         <button
+                            className="button-yellow"
                             disabled={getResource('Recyclables', state) <= 0}
                             style={{ width: '100%' }}
                             onClick={() => {
@@ -80,16 +81,27 @@ function Actions() {
                 )}
                 {unlocks.dumpGarbageAction && (
                     <div className="actions-column  fade-in">
-                        <ProgressActionButton
-                            text="Dump Garbage in Ocean"
-                            icon={dumpOceanIcon}
+                        <button
+                            className="button-blue"
                             disabled={getResource('Garbage', state) <= 0}
-                            callback={() => {
-                                dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: -1, key: 'Garbage' } })
-                                dispatch({ type: 'CHANGE_ACTION', payload: { key: 'dump' } })
+                            style={{ width: '100%' }}
+                            onClick={() => {
+                                const garbageAmount = getResource('Garbage', state)
+                                dispatch({
+                                    type: 'CHANGE_TRACKER',
+                                    payload: { key: 'oceanGarbage', amount: garbageAmount },
+                                })
+                                dispatch({
+                                    type: 'CHANGE_RESOURCE',
+                                    payload: { amount: -garbageAmount, key: 'Garbage' },
+                                })
                             }}
-                            progressActionKey="dump"
-                        />
+                        >
+                            <span className="action-button-label">
+                                <img className="action-button-icon" src={dumpOceanIcon} />
+                                Dump Garbage in Ocean
+                            </span>
+                        </button>
                     </div>
                 )}
             </div>
