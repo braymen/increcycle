@@ -4,21 +4,16 @@ interface Props {
     primaryText: string
     amount: number
     capacity: number
-    greenText: string
-    yellowText: string
-    redText: string
 }
 
-function CapacityLine({ primaryText, amount, capacity, greenText, yellowText, redText }: Props) {
+function CapacityLine({ primaryText, amount, capacity }: Props) {
     const percent = Math.min((amount / capacity) * 100, 100)
     const full = percent >= 95
     const nearlyFull = !full && percent >= 70
-    const stateText = full ? redText : nearlyFull ? yellowText : greenText
-    const stateColor = full ? '#dc9b9b' : nearlyFull ? '#dbd08a' : '#9bdc9b'
 
     return (
         <div style={{ marginBottom: '12px' }}>
-            <div className="resource-line  fade-in">
+            <div className="resource-line fade-in">
                 <div className="resource-line-left" style={{ flex: 1 }}>
                     {primaryText}
                 </div>
@@ -51,7 +46,6 @@ function CapacityLine({ primaryText, amount, capacity, greenText, yellowText, re
                     }}
                 ></div>
             </div>
-            <div style={{ fontSize: '12px', marginTop: '4px', color: stateColor, minHeight: '15px' }}>{stateText}</div>
         </div>
     )
 }

@@ -10,7 +10,7 @@ interface Props {
 function ResourceLine({ primaryText, amount, ratePerSecond, helperText }: Props) {
     return (
         <div style={{ marginBottom: '6px' }}>
-            <div className="resource-line  fade-in">
+            <div className="resource-line fade-in">
                 <div className="resource-line-left">
                     {primaryText}{' '}
                     {helperText && (

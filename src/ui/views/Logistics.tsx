@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from 'react'
-import LevelLine from '../components/LevelLine'
+import EmployeeLine from '../components/EmployeeLine'
 import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
-import { getLevel } from '../../content/levels'
+import { getAssigned, getLevel } from '../../content/levels'
 import { hasUnlock } from '../../content/unlocks'
 import { CONFIGS } from '../../scripts/configs'
 
@@ -10,61 +9,31 @@ function Logistics() {
     const state = useGameState()
     const derived = useGameDerived()
     const dispatch = useGameDispatch()
-    const levels = useMemo(() => {
-        return {
-            truckDrivers: getLevel('Truck Driver', state),
-            organizers: getLevel('Organizer', state),
-        }
-        // oxlint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.levels])
-    const unlocks = useMemo(() => {
-        return {
-            organizer: hasUnlock('Organizer', state),
-            employeeCosts: hasUnlock('Employee Costs', state),
-        }
-        // oxlint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.unlocks])
-
-    useEffect(() => {
-        if (
-            !hasUnlock('Employee Costs', state) &&
-            getLevel('Truck Driver', state) + getLevel('Organizer', state) >= CONFIGS.UNLOCKS.TOTAL_EMPLOYEES_FOR_COST
-        ) {
-            dispatch({ type: 'UNLOCK', payload: { key: 'Employee Costs' } })
-        }
-        // oxlint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.levels])
 
     return (
         <Panel title="Logistics">
             <div className="level-lines-container">
-                <LevelLine
-                    title={`Truck Driver (Lvl. ${levels.truckDrivers})`}
-                    price={derived.truckDriverCost}
-                    canAfford={derived.truckDriverCost <= state.money}
-                    callback={() => {
-                        dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Truck Driver' } })
-                        dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.truckDriverCost } })
-                    }}
+                <EmployeeLine
+                    title="Truck Drivers"
+                    assigned={getAssigned('Truck Driver', state)}
+                    max={getLevel('Truck Driver', state)}
+                    callback={(amount) => dispatch({ type: 'ASSIGN_EMPLOYEES', payload: { key: 'Truck Driver', amount } })}
                 />
-                {unlocks.organizer && (
-                    <LevelLine
-                        title={`Organizer (Lvl. ${levels.organizers})`}
-                        price={derived.organizerCost}
-                        canAfford={derived.organizerCost <= state.money}
-                        callback={() => {
-                            dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Organizer' } })
-                            dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.organizerCost } })
-                        }}
+                {hasUnlock('Organizer', state) && (
+                    <EmployeeLine
+                        title="Organizers"
+                        assigned={getAssigned('Organizer', state)}
+                        max={getLevel('Organizer', state)}
+                        callback={(amount) => dispatch({ type: 'ASSIGN_EMPLOYEES', payload: { key: 'Organizer', amount } })}
                     />
                 )}
-                {unlocks.employeeCosts && (
-                    <div className="level-line  fade-in" style={{ paddingTop: '10px', borderTop: '1px solid #ffffff55' }}>
+                {hasUnlock('Employee Costs', state) && (
+                    <div className="level-line fade-in">
                         <div className="level-line-title">
                             Employee Costs{' '}
                             <span
                                 className="help-marker"
-                                data-tooltip={`Employees are not free... Each employee costs $0.01 a second. If you run out of money, they stop.`}
+                                data-tooltip={`Employees are not free... Each working employee costs $${CONFIGS.EMPLOYEES.BASE_EMPLOYEE_PAY.toFixed(2)} a second. If you run out of money, they stop.`}
                                 data-tooltip-align=""
                             >
                                 (?)

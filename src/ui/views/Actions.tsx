@@ -38,11 +38,11 @@ function Actions() {
                     />
                 </div>
                 {unlocks.sortAction && (
-                    <div className="actions-column  fade-in">
+                    <div className="actions-column fade-in">
                         <ProgressActionButton
                             text="Sift Through Garbage"
                             icon={siftTrashIcon}
-                            disabled={getResource('Unsorted Waste', state) <= 0 || derived.garbageFull}
+                            disabled={getResource('Unsorted Waste', state) <= 0 || derived.garbageFull || derived.recyclablesFull}
                             callback={() => {
                                 const recyclablesProc = Math.random() < derived.percentRecyclables
                                 let drop: ResourceKey = 'Garbage'
@@ -56,7 +56,7 @@ function Actions() {
                     </div>
                 )}
                 {unlocks.sellRecyclablesAction && (
-                    <div className="actions-column  fade-in">
+                    <div className="actions-column fade-in">
                         <button
                             className="button-yellow"
                             disabled={getResource('Recyclables', state) <= 0}
@@ -80,7 +80,7 @@ function Actions() {
                     </div>
                 )}
                 {unlocks.dumpGarbageAction && (
-                    <div className="actions-column  fade-in">
+                    <div className="actions-column fade-in">
                         <button
                             className="button-blue"
                             disabled={getResource('Garbage', state) <= 0}

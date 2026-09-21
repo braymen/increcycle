@@ -1,6 +1,6 @@
 import { CONFIGS } from './configs'
-import { getResource, ResourcesJSON, type ResourceKey } from '../content/resources'
-import { getLevel, LevelsJSON, type LevelKey } from '../content/levels'
+import { getResource, RecyclableResourceKeys, ResourcesJSON, type ResourceKey } from '../content/resources'
+import { EmployeeLevelKeys, getAssigned, LevelsJSON, type EmployeeKey, type LevelKey } from '../content/levels'
 import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
@@ -17,8 +17,9 @@ export interface GameState {
         amount: number
     }[]
     levels: {
-        name: string
+        name: LevelKey
         amount: number
+        assigned?: number
     }[]
     unlocks: string[]
     achievements: string[]
@@ -62,6 +63,7 @@ export const GameActionKeys = {
     CHANGE_MONEY: 'CHANGE_MONEY',
     CHANGE_RESOURCE: 'CHANGE_RESOURCE',
     CHANGE_LEVEL: 'CHANGE_LEVEL',
+    ASSIGN_EMPLOYEES: 'ASSIGN_EMPLOYEES',
     UNLOCK: 'UNLOCK',
     CHANGE_ACTION: 'CHANGE_ACTION',
     CHANGE_TRACKER: 'CHANGE_TRACKER',
@@ -74,6 +76,7 @@ type GameActionPayloads = {
     [GameActionKeys.CHANGE_MONEY]: { amount: number }
     [GameActionKeys.CHANGE_RESOURCE]: { key: ResourceKey; amount: number }
     [GameActionKeys.CHANGE_LEVEL]: { key: LevelKey; amount: number }
+    [GameActionKeys.ASSIGN_EMPLOYEES]: { key: EmployeeKey; amount: number }
     [GameActionKeys.UNLOCK]: { key: UnlockKey }
     [GameActionKeys.CHANGE_ACTION]: { key: ProgressActionKey }
     [GameActionKeys.CHANGE_TRACKER]: { key: TrackerKeys; amount: number }
@@ -112,17 +115,19 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 const resource = newResources.find((r) => r.name === key)
                 if (resource) resource.amount += amount
             }
+            const recyclablesTotal = () => RecyclableResourceKeys.reduce((total, key) => total + amountOf(key), 0)
 
             if (employeeCosts <= newMoney || !hasUnlock('Employee Costs', state)) {
                 if (hasUnlock('Employee Costs', state)) newMoney -= employeeCosts
 
                 // These employees can't function while at capacity (but you lose money)
                 const unsortedRoom = Math.max(0, derived.unsortedCapacity - amountOf('Unsorted Waste'))
-                addAmount('Unsorted Waste', Math.min(getLevel('Truck Driver', state), unsortedRoom))
+                addAmount('Unsorted Waste', Math.min(getAssigned('Truck Driver', state), unsortedRoom))
 
-                for (let i = 0; i < getLevel('Organizer', state); i++) {
+                for (let i = 0; i < getAssigned('Organizer', state); i++) {
                     if (amountOf('Unsorted Waste') <= 0) break
                     if (amountOf('Garbage') >= derived.garbageCapacity) break
+                    if (recyclablesTotal() >= derived.recyclablesCapacity) break
                     const recyclablesProc = Math.random() < derived.percentRecyclables
                     let drop: ResourceKey = 'Garbage'
                     if (recyclablesProc) drop = 'Recyclables'
@@ -131,10 +136,19 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 }
             }
 
+            const garbageKindaFull = amountOf('Garbage') >= derived.garbageCapacity / 2
+            const unsortedKindaFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity / 2
+            const recyclablesKindaFull = recyclablesTotal() >= derived.recyclablesCapacity / 2
+            if (!hasUnlock('Capacities', state) && (garbageKindaFull || unsortedKindaFull || recyclablesKindaFull))
+                newUnlocks.push('Capacities')
             const garbageFull = amountOf('Garbage') >= derived.garbageCapacity
             const unsortedFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity
-            if (!hasUnlock('Capacities', state) && (garbageFull || unsortedFull)) newUnlocks.push('Capacities')
-            if (!hasUnlock('Dump Garbage', state) && garbageFull) newUnlocks.push('Dump Garbage')
+            const recyclablesFull = recyclablesTotal() >= derived.recyclablesCapacity
+            if (!hasUnlock('Capacity Upgrades', state) && (garbageFull || unsortedFull || recyclablesFull))
+                newUnlocks.push('Capacity Upgrades')
+            if (!hasUnlock('Dump Garbage', state) && garbageFull) {
+                newUnlocks.push('Dump Garbage')
+            }
 
             return {
                 ...state,
@@ -173,9 +187,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         }
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: string[] = []
-            if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Logistics']
-            if (!hasUnlock('Sorting', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.SORTING_PANEL_IN_MONEY)
-                newUnlocks = [...newUnlocks, 'Sorting']
+            if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Trashmart']
             if (!hasUnlock('Organizer', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
                 newUnlocks = [...newUnlocks, 'Organizer']
             return {
@@ -204,12 +216,34 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         case GameActionKeys.CHANGE_LEVEL: {
             if (payload.amount === 0) return state
             if (!LevelsJSON.find((l) => l.name === payload.key)) return state
-            let newUnlocks: string[] = []
+            let newUnlocks: UnlockKey[] = []
+            if (
+                !hasUnlock('Sorting', state) &&
+                (['Garbage Capacity', 'Recyclables Capacity', 'Unsorted Waste Capacity'] as LevelKey[]).includes(payload.key)
+            ) {
+                newUnlocks.push('Sorting')
+            }
+            if (!hasUnlock('Logistics', state) && (['Truck Driver', 'Organizer'] as LevelKey[]).includes(payload.key)) {
+                newUnlocks.push('Logistics')
+            }
+
             const existingLevel = state.levels.find((l) => l.name === payload.key)
             const levels = existingLevel
-                ? state.levels.map((l) => (l.name === payload.key ? { ...l, amount: l.amount + payload.amount } : l))
-                : [...state.levels, { name: payload.key as string, amount: payload.amount }]
+                ? state.levels.map((l) => {
+                      if (l.name !== payload.key) return l
+                      const assigned = l.assigned === undefined ? undefined : Math.max(0, l.assigned + payload.amount)
+                      return { ...l, amount: l.amount + payload.amount, assigned }
+                  })
+                : [...state.levels, { name: payload.key, amount: payload.amount }]
             return { ...state, levels, unlocks: [...state.unlocks, ...newUnlocks] }
+        }
+        case GameActionKeys.ASSIGN_EMPLOYEES: {
+            if (!(EmployeeLevelKeys as readonly LevelKey[]).includes(payload.key)) return state
+            const existingLevel = state.levels.find((l) => l.name === payload.key)
+            if (!existingLevel) return state
+            const assigned = Math.max(0, Math.min(Math.floor(payload.amount), existingLevel.amount))
+            const levels = state.levels.map((l) => (l.name === payload.key ? { ...l, assigned } : l))
+            return { ...state, levels }
         }
         case GameActionKeys.UNLOCK: {
             if (!UnlocksJSON.find((u) => u.name === payload.key)) return state

@@ -19,9 +19,6 @@ export const ResourcesJSON = [
         description: 'Unsorted recyclables that you can sell and make another persons problem.',
     },
     {
-        name: 'Gas',
-    },
-    {
         name: 'Paper',
     },
     {
@@ -34,13 +31,19 @@ export const ResourcesJSON = [
         name: 'Plastic',
     },
     {
-        name: 'Plastic Sheets',
+        name: 'Wood',
     },
     {
         name: 'Biomass',
     },
     {
         name: 'Ash',
+    },
+    {
+        name: 'Clay',
+    },
+    {
+        name: 'Cement',
     },
     {
         name: 'Power',
@@ -51,4 +54,10 @@ export type ResourceKey = (typeof ResourcesJSON)[number]['name']
 
 export const getResource = (key: ResourceKey, state: GameState) => {
     return state.resources.find((r) => r.name === key)?.amount || 0
+}
+
+export const RecyclableResourceKeys: readonly ResourceKey[] = ['Recyclables', 'Paper', 'Glass', 'Metal', 'Plastic', 'Wood']
+
+export const getRecyclablesTotal = (state: GameState) => {
+    return RecyclableResourceKeys.reduce((total, key) => total + getResource(key, state), 0)
 }

@@ -4,6 +4,15 @@
     flex-direction: column;
 }
 
+.level-lines-category {
+    margin: 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ffffff33;
+    color: #f8a987;
+    font-size: 16px;
+    font-weight: 600;
+}
+
 .level-line {
     display: flex;
     align-items: center;
