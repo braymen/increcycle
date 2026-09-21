@@ -5,15 +5,19 @@ interface Props {
     level: number
     price: number
     canAfford: boolean
+    levelPrefix?: string
+    levelSuffix?: string
     callback: Function
 }
 
-function LevelLine({ title, level, price, canAfford, callback }: Props) {
+function LevelLine({ title, level, price, canAfford, levelPrefix, levelSuffix, callback }: Props) {
     return (
         <div className="level-line fade-in">
             <div className="level-line-title">
                 {title}
-                <span style={{ float: 'right', marginRight: '12px' }}>Lvl. {level}</span>
+                <span style={{ float: 'right', marginRight: '12px' }}>
+                    {levelPrefix !== undefined ? levelPrefix : 'Lvl.'} {level} {levelSuffix !== undefined ? levelSuffix : ''}
+                </span>
             </div>
             <div className="level-line-button">
                 <button className="button-yellow" disabled={!canAfford} onClick={() => callback()}>

@@ -18,7 +18,7 @@ function Capacities() {
     }, [state.unlocks])
 
     return (
-        <Panel title="Capacities">
+        <Panel title="Landfill Capacities">
             {unlocks.unsortedWaste && (
                 <CapacityLine
                     primaryText="Unsorted Waste"

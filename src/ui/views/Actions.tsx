@@ -83,7 +83,7 @@ function Actions() {
                         >
                             <span className="action-button-label">
                                 <img className="action-button-icon" src={sellRecyclablesIcon} />
-                                Sell Recyclables to Shady Sam
+                                Sell Recyclables to Sam
                             </span>
                         </button>
                     </div>

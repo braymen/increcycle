@@ -44,14 +44,16 @@ function Trashmart() {
     }, [state.levels])
 
     return (
-        <Panel title="Trashmart">
+        <Panel title="The Garbage District">
             <div className="level-lines-container">
-                <h3 className="level-lines-category">Logistics Upgrades</h3>
+                <h3 className="level-lines-category">Hire Employees</h3>
                 <LevelLine
                     title={`Truck Driver`}
                     level={levels.truckDrivers}
                     price={derived.truckDriverCost}
                     canAfford={derived.truckDriverCost <= state.money}
+                    levelPrefix=""
+                    levelSuffix="Hired"
                     callback={() => {
                         dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Truck Driver' } })
                         dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.truckDriverCost } })
@@ -63,6 +65,8 @@ function Trashmart() {
                         level={levels.organizers}
                         price={derived.organizerCost}
                         canAfford={derived.organizerCost <= state.money}
+                        levelPrefix=""
+                        levelSuffix="Hired"
                         callback={() => {
                             dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Organizer' } })
                             dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.organizerCost } })

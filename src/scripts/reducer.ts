@@ -5,6 +5,7 @@ import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
 import { hasAchievement, type AchievementKey } from '../content/achievements'
+import { StoryJSON, type StoryKey } from '../content/story'
 
 // Setting up Game State
 export interface GameState {
@@ -31,6 +32,7 @@ export interface GameState {
     trackers: {
         oceanGarbage: number
     }
+    story: StoryKey[]
 }
 
 export const initialState = (): GameState => {
@@ -51,6 +53,7 @@ export const initialState = (): GameState => {
         trackers: {
             oceanGarbage: 0,
         },
+        story: [],
     }
 }
 
@@ -137,11 +140,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 }
             }
 
-            const garbageKindaFull = amountOf('Garbage') >= derived.garbageCapacity / 2
-            const unsortedKindaFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity / 2
-            const recyclablesKindaFull = recyclablesTotal() >= derived.recyclablesCapacity / 2
-            if (!hasUnlock('Capacities', state) && (garbageKindaFull || unsortedKindaFull || recyclablesKindaFull))
-                newUnlocks.push('Capacities')
+            if (!hasUnlock('Capacities', state) && state.money > 0) newUnlocks.push('Capacities')
             const garbageFull = amountOf('Garbage') >= derived.garbageCapacity
             const unsortedFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity
             const recyclablesFull = recyclablesTotal() >= derived.recyclablesCapacity
@@ -151,11 +150,22 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 newUnlocks.push('Dump Garbage')
             }
 
+            // Story Checks
+            const currentStoryIndex = state.story.length
+            let newStory: StoryKey[] = []
+            if (currentStoryIndex + 1 <= StoryJSON.length) {
+                const unlockNextStoryEntry = StoryJSON[currentStoryIndex].checkTrigger(state)
+                if (unlockNextStoryEntry) {
+                    newStory.push(StoryJSON[currentStoryIndex].name as StoryKey)
+                }
+            }
+
             return {
                 ...state,
                 money: newMoney,
                 resources: [...newResources],
                 unlocks: [...state.unlocks, ...newUnlocks],
+                story: [...state.story, ...newStory],
                 lastTick,
             }
         }
