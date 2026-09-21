@@ -1,6 +1,6 @@
 import { CONFIGS } from './configs'
 import { getResource, RecyclableResourceKeys, ResourcesJSON, type ResourceKey } from '../content/resources'
-import { EmployeeLevelKeys, getAssigned, LevelsJSON, type EmployeeKey, type LevelKey } from '../content/levels'
+import { EmployeeLevelKeys, getAssigned, getLevel, LevelsJSON, type EmployeeKey, type LevelKey } from '../content/levels'
 import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
@@ -142,10 +142,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             if (!hasUnlock('Capacities', state) && state.money > 0) newUnlocks.push('Capacities')
             const garbageFull = amountOf('Garbage') >= derived.garbageCapacity
-            const unsortedFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity
-            const recyclablesFull = recyclablesTotal() >= derived.recyclablesCapacity
-            if (!hasUnlock('Capacity Upgrades', state) && (garbageFull || unsortedFull || recyclablesFull))
-                newUnlocks.push('Capacity Upgrades')
+            if (!hasUnlock('Capacity Upgrades', state) && state.trackers.oceanGarbage > 0) newUnlocks.push('Capacity Upgrades')
             if (!hasUnlock('Dump Garbage', state) && garbageFull) {
                 newUnlocks.push('Dump Garbage')
             }
@@ -160,12 +157,24 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 }
             }
 
+            // Unlock Checks
+            if (!hasUnlock('Sell Sam Recyclables', state) && getResource('Recyclables', state) >= 3) {
+                newUnlocks.push('Sell Sam Recyclables')
+            }
+
+            // Achievement Checks
+            const newAchievements: AchievementKey[] = []
+            if (!hasAchievement('Truck Drivers I', state) && getLevel('Truck Driver', state) > 5)
+                newAchievements.push('Truck Drivers I')
+            if (!hasAchievement('Organizer I', state) && getLevel('Organizer', state) > 5) newAchievements.push('Organizer I')
+
             return {
                 ...state,
                 money: newMoney,
                 resources: [...newResources],
                 unlocks: [...state.unlocks, ...newUnlocks],
                 story: [...state.story, ...newStory],
+                achievements: [...state.achievements, ...newAchievements],
                 lastTick,
             }
         }
@@ -200,7 +209,8 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             let newUnlocks: UnlockKey[] = []
             let newAchievements: AchievementKey[] = []
             const newMoney = Math.round(Math.max(0, state.money + payload.amount) * 100) / 100
-            if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Trashmart']
+            if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money']
+            if (!hasUnlock('Trashmart', state) && newMoney >= 10) newUnlocks = [...newUnlocks, 'Trashmart']
             if (!hasUnlock('Organizer', state) && newMoney >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
                 newUnlocks = [...newUnlocks, 'Organizer']
 

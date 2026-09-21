@@ -36,9 +36,9 @@ function Log() {
                     const age = Math.min(state.story.length - 1 - index, FADE_STEPS)
                     const opacity = 1 - (age * (1 - MIN_OPACITY)) / FADE_STEPS
                     return (
-                        <div key={u + index} className="fade-in">
+                        <div key={u + index} className="fade-in" style={{ fontSize: '14px' }}>
                             <p style={{ opacity, transition: 'opacity 0.5s' }}>
-                                <span style={{ color: '#f3ebac', fontWeight: '600', fontSize: '12px' }}>ENTRY #{index + 1}:</span>{' '}
+                                <span style={{ color: '#f3ebac', fontWeight: '600' }}>ENTRY #{index + 1}:</span>{' '}
                                 <span style={{ fontStyle: 'italic' }}>{uData.text}</span>
                             </p>
                         </div>

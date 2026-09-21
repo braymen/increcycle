@@ -5,7 +5,6 @@ import type { Resource, ResourceKey } from './resources'
 interface Unlock {
     name: string
     description?: string
-    logText?: string
 }
 
 const resourceUnlocks: Unlock[] = ResourcesJSON.map((r: Resource) => {
@@ -48,7 +47,6 @@ const otherUnlocks = [
     },
     {
         name: 'Sort Garbage',
-        logText: 'Going through this garbage... There has to be some recyclables I can make a little money from...',
     },
     {
         name: 'Organizer',
@@ -58,14 +56,15 @@ const otherUnlocks = [
     },
     {
         name: 'Dump Garbage',
-        logText: 'Sadly, there was no other quick solution. Dumping in the ocean is the only way...',
     },
     {
         name: 'Capacity Upgrades',
     },
     {
+        name: 'Sell Sam Recyclables',
+    },
+    {
         name: 'Log',
-        logText: "Stealing my first garbage. I don't know what I have come to. But I am sure they don't mind.",
     },
 ] as const satisfies readonly Unlock[]
 

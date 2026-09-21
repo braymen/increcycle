@@ -16,7 +16,7 @@ function Actions() {
     const unlocks = useMemo(() => {
         return {
             sortAction: hasUnlock('Sort Garbage', state),
-            sellRecyclablesAction: hasUnlock('Recyclables', state),
+            sellRecyclablesAction: hasUnlock('Sell Sam Recyclables', state),
             dumpGarbageAction: hasUnlock('Dump Garbage', state),
         }
         // oxlint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +30,7 @@ function Actions() {
                         text="Steal Garbage From House"
                         icon={stealTrashIcon}
                         callback={() => {
-                            if (!hasUnlock('Log', state)) {
+                            if (!hasUnlock('Log', state) && getResource('Unsorted Waste', state) >= 4) {
                                 dispatch({
                                     type: 'UNLOCK',
                                     payload: {

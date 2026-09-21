@@ -79,12 +79,12 @@ function App() {
                         </div>
                         <div className="column">
                             <Actions />
-                            {unlocks.log && <Log />}
+                            {unlocks.logistics && <Logistics />}
                             {unlocks.sorting && <Sorting />}
                             {unlocks.massburnsystem && <MassBurnSystem />}
                         </div>
                         <div className="column">
-                            {unlocks.logistics && <Logistics />}
+                            {unlocks.log && <Log />}
                             {unlocks.trashmart && <Trashmart />}
                             {unlocks.experiments && <Experiments />}
                             {unlocks.market && <Market />}

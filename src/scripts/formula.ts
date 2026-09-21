@@ -10,6 +10,7 @@ export interface GameDerived {
     truckDriverCost: number
     organizerCost: number
     employeeCosts: number
+    totalEmployees: number
     garbageCapacity: number
     garbageFull: boolean
     unsortedCapacity: number
@@ -28,13 +29,14 @@ export const calculateDerived = (state: GameState): GameDerived => {
     const recyclablesCapacity = CONFIGS.BALANCE.BASE_RECYCLABLES_CAPACITY * (getLevel('Recyclables Capacity', state) + 1)
     const recyclablesTotal = getRecyclablesTotal(state)
     return {
-        percentRecyclables: 0.2,
+        percentRecyclables: 0.25,
         sortAmount: 1,
         recyclablesWorth: 1,
         truckDriverCost: Math.pow(getLevel('Truck Driver', state) + 1, 2),
         organizerCost: Math.pow(getLevel('Organizer', state) + 1, 3),
         employeeCosts:
             (getAssigned('Organizer', state) + getAssigned('Truck Driver', state)) * CONFIGS.EMPLOYEES.BASE_EMPLOYEE_PAY,
+        totalEmployees: getLevel('Organizer', state) + getLevel('Truck Driver', state),
         garbageCapacity,
         garbageFull: getResource('Garbage', state) >= garbageCapacity,
         unsortedCapacity,
