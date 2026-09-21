@@ -4,6 +4,7 @@ import { EmployeeLevelKeys, getAssigned, LevelsJSON, type EmployeeKey, type Leve
 import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
+import { hasAchievement, type AchievementKey } from '../content/achievements'
 
 // Setting up Game State
 export interface GameState {
@@ -22,7 +23,7 @@ export interface GameState {
         assigned?: number
     }[]
     unlocks: string[]
-    achievements: string[]
+    achievements: AchievementKey[]
     actionProgress: {
         id: ProgressActionKey
         progress: number
@@ -42,7 +43,7 @@ export const initialState = (): GameState => {
         resources: [],
         levels: [],
         unlocks: [],
-        achievements: ['Unsorted Trash I'],
+        achievements: [],
         actionProgress: {
             id: '',
             progress: 0,
@@ -187,16 +188,30 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
         }
         case GameActionKeys.CHANGE_MONEY: {
             let newUnlocks: UnlockKey[] = []
+            let newAchievements: AchievementKey[] = []
+            const newMoney = Math.round(Math.max(0, state.money + payload.amount) * 100) / 100
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Trashmart']
-            if (!hasUnlock('Organizer', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
+            if (!hasUnlock('Organizer', state) && newMoney >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
                 newUnlocks = [...newUnlocks, 'Organizer']
-            if (state.money >= 50) {
+
+            // Money Achievements and Unlock
+            if ((!hasAchievement('Cash I', state) || !hasUnlock('Achievements', state)) && newMoney >= 50) {
                 newUnlocks.push('Achievements')
+                newAchievements.push('Cash I')
             }
+            if (!hasAchievement('Cash II', state) && newMoney >= 250) newAchievements.push('Cash II')
+            if (!hasAchievement('Cash III', state) && newMoney >= 1_000) newAchievements.push('Cash III')
+            if (!hasAchievement('Cash IV', state) && newMoney >= 10_000) newAchievements.push('Cash IV')
+            if (!hasAchievement('Cash V', state) && newMoney >= 100_000) newAchievements.push('Cash V')
+            if (!hasAchievement('Cash VI', state) && newMoney >= 1_000_000) newAchievements.push('Cash VI')
+            if (!hasAchievement('Cash VII', state) && newMoney >= 1_000_000_000) newAchievements.push('Cash VII')
+            if (!hasAchievement('Cash VIII', state) && newMoney >= 1_000_000_000_000) newAchievements.push('Cash VIII')
+
             return {
                 ...state,
-                money: Math.round(Math.max(0, state.money + payload.amount) * 100) / 100,
+                money: newMoney,
                 unlocks: [...state.unlocks, ...newUnlocks],
+                achievements: [...state.achievements, ...newAchievements],
             }
         }
         case GameActionKeys.CHANGE_RESOURCE: {

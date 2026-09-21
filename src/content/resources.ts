@@ -3,12 +3,14 @@ import type { GameState } from '../scripts/reducer'
 export interface Resource {
     name: string
     description?: string
+    logText?: string
 }
 
 export const ResourcesJSON = [
     {
         name: 'Unsorted Waste',
         description: 'Municiple trash that needs organizing.',
+        logText: 'Test',
     },
     {
         name: 'Garbage',
@@ -56,7 +58,7 @@ export const getResource = (key: ResourceKey, state: GameState) => {
     return state.resources.find((r) => r.name === key)?.amount || 0
 }
 
-export const RecyclableResourceKeys: readonly ResourceKey[] = ['Recyclables', 'Paper', 'Glass', 'Metal', 'Plastic', 'Wood']
+export const RecyclableResourceKeys: ResourceKey[] = ['Recyclables', 'Paper', 'Glass', 'Metal', 'Plastic', 'Wood']
 
 export const getRecyclablesTotal = (state: GameState) => {
     return RecyclableResourceKeys.reduce((total, key) => total + getResource(key, state), 0)

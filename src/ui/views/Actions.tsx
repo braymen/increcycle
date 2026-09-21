@@ -30,6 +30,14 @@ function Actions() {
                         text="Steal Garbage From House"
                         icon={stealTrashIcon}
                         callback={() => {
+                            if (!hasUnlock('Log', state)) {
+                                dispatch({
+                                    type: 'UNLOCK',
+                                    payload: {
+                                        key: 'Log',
+                                    },
+                                })
+                            }
                             dispatch({ type: 'CHANGE_RESOURCE', payload: { key: 'Unsorted Waste', amount: 1 } })
                             dispatch({ type: 'CHANGE_ACTION', payload: { key: 'steal' } })
                         }}
@@ -47,6 +55,7 @@ function Actions() {
                                 const recyclablesProc = Math.random() < derived.percentRecyclables
                                 let drop: ResourceKey = 'Garbage'
                                 if (recyclablesProc) drop = 'Recyclables'
+
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: derived.sortAmount, key: drop } })
                                 dispatch({ type: 'CHANGE_RESOURCE', payload: { amount: -1, key: 'Unsorted Waste' } })
                                 dispatch({ type: 'CHANGE_ACTION', payload: { key: 'sift' } })
@@ -95,14 +104,6 @@ function Actions() {
                                     type: 'CHANGE_RESOURCE',
                                     payload: { amount: -garbageAmount, key: 'Garbage' },
                                 })
-                                if (!hasUnlock('Log', state)) {
-                                    dispatch({
-                                        type: 'UNLOCK',
-                                        payload: {
-                                            key: 'Log',
-                                        },
-                                    })
-                                }
                             }}
                         >
                             <span className="action-button-label">
