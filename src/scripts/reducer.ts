@@ -103,38 +103,38 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
 
             // Calculate employees
             const employeeCosts = derived.employeeCosts
-            const newResources = [...state.resources]
+            const newResources = state.resources.map((r) => ({ ...r }))
             let newMoney = (state.money / 100) * 100 // rounding fix?
             const newUnlocks: UnlockKey[] = []
+
+            const amountOf = (key: ResourceKey) => newResources.find((r) => r.name === key)?.amount || 0
+            const addAmount = (key: ResourceKey, amount: number) => {
+                const resource = newResources.find((r) => r.name === key)
+                if (resource) resource.amount += amount
+            }
+
             if (employeeCosts <= newMoney || !hasUnlock('Employee Costs', state)) {
                 if (hasUnlock('Employee Costs', state)) newMoney -= employeeCosts
 
                 // These employees can't function while at capacity (but you lose money)
-                if (getResource('Garbage', state) < derived.garbageCapacity) {
-                    // Truck Drivers
-                    const truckDriverLevel = getLevel('Truck Driver', state)
-                    const garbageCollected = truckDriverLevel
-                    const garbageResource = newResources.find((r) => r.name === 'Unsorted Waste')
-                    if (garbageResource) garbageResource.amount += garbageCollected
+                const unsortedRoom = Math.max(0, derived.unsortedCapacity - amountOf('Unsorted Waste'))
+                addAmount('Unsorted Waste', Math.min(getLevel('Truck Driver', state), unsortedRoom))
 
-                    // Organizers
-                    for (let i = 0; i < getLevel('Organizer', state); i++) {
-                        const unsortedWaste = newResources.find((r) => r.name === 'Unsorted Waste')
-                        if (unsortedWaste && unsortedWaste.amount <= 0) break
-                        const recyclablesProc = Math.random() < derived.percentRecyclables
-                        let drop = 'Garbage'
-                        if (recyclablesProc) drop = 'Recyclables'
-                        const dropResource = newResources.find((r) => r.name === drop)
-                        if (dropResource) dropResource.amount += derived.sortAmount
-                        if (unsortedWaste) unsortedWaste.amount -= 1
-                    }
-                } else {
-                    if (!hasUnlock('Capacities', state)) {
-                        newUnlocks.push('Capacities')
-                        newUnlocks.push('Dump Garbage')
-                    }
+                for (let i = 0; i < getLevel('Organizer', state); i++) {
+                    if (amountOf('Unsorted Waste') <= 0) break
+                    if (amountOf('Garbage') >= derived.garbageCapacity) break
+                    const recyclablesProc = Math.random() < derived.percentRecyclables
+                    let drop: ResourceKey = 'Garbage'
+                    if (recyclablesProc) drop = 'Recyclables'
+                    addAmount(drop, derived.sortAmount)
+                    addAmount('Unsorted Waste', -1)
                 }
             }
+
+            const garbageFull = amountOf('Garbage') >= derived.garbageCapacity
+            const unsortedFull = amountOf('Unsorted Waste') >= derived.unsortedCapacity
+            if (!hasUnlock('Capacities', state) && (garbageFull || unsortedFull)) newUnlocks.push('Capacities')
+            if (!hasUnlock('Dump Garbage', state) && garbageFull) newUnlocks.push('Dump Garbage')
 
             return {
                 ...state,

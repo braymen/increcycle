@@ -30,7 +30,7 @@ function ResourceLine({ primaryText, amount, ratePerSecond, helperText }: Props)
                         }}
                     >
                         {ratePerSecond >= 0 ? '+' : ''}
-                        {ratePerSecond}/sec
+                        {ratePerSecond}/s
                     </span>
                 </div>
             </div>

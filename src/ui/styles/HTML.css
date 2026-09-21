@@ -70,15 +70,15 @@ button:disabled {
 }
 
 .button-yellow {
-    background-color: rgb(130, 117, 0);
+    background-color: rgb(159, 106, 32);
     color: var(--text-color-light);
 }
 
 .button-yellow:hover {
-    background-color: rgb(149, 134, 0);
+    background-color: rgb(181, 122, 40);
 }
 
 .button-yellow:active,
 .button-yellow.pressed {
-    background-color: rgb(130, 117, 0);
+    background-color: rgb(159, 106, 32);
 }
