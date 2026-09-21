@@ -186,10 +186,13 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             return { ...state, lastFastTick }
         }
         case GameActionKeys.CHANGE_MONEY: {
-            let newUnlocks: string[] = []
+            let newUnlocks: UnlockKey[] = []
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money', 'Trashmart']
             if (!hasUnlock('Organizer', state) && state.money + payload.amount >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
                 newUnlocks = [...newUnlocks, 'Organizer']
+            if (state.money >= 50) {
+                newUnlocks.push('Achievements')
+            }
             return {
                 ...state,
                 money: Math.round(Math.max(0, state.money + payload.amount) * 100) / 100,

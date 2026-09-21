@@ -79,7 +79,7 @@ function Actions() {
                         </button>
                     </div>
                 )}
-                {unlocks.dumpGarbageAction && (
+                {unlocks.dumpGarbageAction && derived.garbageFull && (
                     <div className="actions-column fade-in">
                         <button
                             className="button-blue"
@@ -95,6 +95,14 @@ function Actions() {
                                     type: 'CHANGE_RESOURCE',
                                     payload: { amount: -garbageAmount, key: 'Garbage' },
                                 })
+                                if (!hasUnlock('Log', state)) {
+                                    dispatch({
+                                        type: 'UNLOCK',
+                                        payload: {
+                                            key: 'Log',
+                                        },
+                                    })
+                                }
                             }}
                         >
                             <span className="action-button-label">

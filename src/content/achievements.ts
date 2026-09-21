@@ -1,24 +1,76 @@
 import type { GameState } from '../scripts/reducer'
+import type { UnlockKey } from './unlocks'
 
 interface Achievement {
     name: string
     description?: string
     gridPrimaryName: string
     gridSecondaryName: string
+    hiddenUntil?: UnlockKey
 }
 
 export const AchievementsJSON = [
     {
-        name: 'Unsorted Trash I',
-        description: 'Gather 100 Unsorted Trash',
-        gridPrimaryName: 'UT',
+        name: 'Cash I',
+        description: 'Reach $50',
+        gridPrimaryName: 'C',
         gridSecondaryName: 'I',
     },
     {
-        name: 'Unsorted Trash II',
-        description: 'Gather 1,000 Unsorted Trash',
-        gridPrimaryName: 'UT',
+        name: 'Cash II',
+        description: 'Reach $250',
+        gridPrimaryName: 'C',
         gridSecondaryName: 'II',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $1,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'III',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $10,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'IV',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $100,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'V',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $1,000,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'VI',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $1,000,000,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'VII',
+    },
+    {
+        name: 'Cash II',
+        description: 'Reach $1,000,000,000,000',
+        gridPrimaryName: 'C',
+        gridSecondaryName: 'VIII',
+    },
+    {
+        name: 'Truck Drivers I',
+        description: 'Reach 5 Truck Drivers',
+        gridPrimaryName: 'TD',
+        gridSecondaryName: 'I',
+        hiddenUntil: 'Trashmart',
+    },
+    {
+        name: 'Organizer I',
+        description: 'Reach 5 Organizers',
+        gridPrimaryName: 'OG',
+        gridSecondaryName: 'I',
+        hiddenUntil: 'Trashmart',
     },
 ] as const satisfies readonly Achievement[]
 
