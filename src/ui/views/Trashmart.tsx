@@ -54,6 +54,7 @@ function Trashmart() {
                     canAfford={derived.truckDriverCost <= state.money}
                     levelPrefix=""
                     levelSuffix="Hired"
+                    helperText="Truck drivers help you with finding unsorted waste at +1/sec each"
                     callback={() => {
                         dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Truck Driver' } })
                         dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.truckDriverCost } })
@@ -67,6 +68,7 @@ function Trashmart() {
                         canAfford={derived.organizerCost <= state.money}
                         levelPrefix=""
                         levelSuffix="Hired"
+                        helperText="Organizers help sort unsorted waste into recyclables and garbage at +1/sec (consumes 1 unsorted waste each time)"
                         callback={() => {
                             dispatch({ type: 'CHANGE_LEVEL', payload: { amount: 1, key: 'Organizer' } })
                             dispatch({ type: 'CHANGE_MONEY', payload: { amount: -derived.organizerCost } })

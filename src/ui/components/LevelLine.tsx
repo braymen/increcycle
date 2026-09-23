@@ -7,14 +7,20 @@ interface Props {
     canAfford: boolean
     levelPrefix?: string
     levelSuffix?: string
+    helperText?: string
     callback: Function
 }
 
-function LevelLine({ title, level, price, canAfford, levelPrefix, levelSuffix, callback }: Props) {
+function LevelLine({ title, level, price, canAfford, levelPrefix, levelSuffix, helperText, callback }: Props) {
     return (
         <div className="level-line fade-in">
             <div className="level-line-title">
-                {title}
+                {title}{' '}
+                {helperText && (
+                    <span className="help-marker" data-tooltip={helperText} data-tooltip-align="">
+                        (?)
+                    </span>
+                )}
                 <span style={{ float: 'right', marginRight: '12px' }}>
                     {levelPrefix !== undefined ? levelPrefix : 'Lvl.'} {level} {levelSuffix !== undefined ? levelSuffix : ''}
                 </span>
