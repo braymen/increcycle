@@ -11,7 +11,7 @@ import '../styles/Animations.css'
 import Navbar from './Navbar'
 import Resources from './Resources'
 import Actions from './Actions'
-import Trashmart from './Trashmart'
+import Shop from './Shop'
 import Capacities from './Capacities'
 import Experiments from './Experiments'
 import Settings from './Settings'
@@ -54,7 +54,7 @@ function App() {
             sorting: hasUnlock('Sorting', state),
             logistics: hasUnlock('Logistics', state),
             massburnsystem: hasUnlock('Mass-Burn System', state),
-            trashmart: hasUnlock('Trashmart', state),
+            shop: hasUnlock('Shop', state),
             experiments: hasUnlock('Experiments', state),
             market: hasUnlock('Market', state),
             policies: hasUnlock('Policies', state),
@@ -85,7 +85,7 @@ function App() {
                         </div>
                         <div className="column">
                             {unlocks.log && <Log />}
-                            {unlocks.trashmart && <Trashmart />}
+                            {unlocks.shop && <Shop />}
                             {unlocks.experiments && <Experiments />}
                             {unlocks.market && <Market />}
                             {unlocks.policies && <Policies />}

@@ -11,7 +11,7 @@ export const CONFIGS = {
     },
     BALANCE: {
         BASE_UNSORTED_CAPACITY: 100,
-        BASE_GARBAGE_CAPACITY: 50,
+        BASE_GARBAGE_CAPACITY: 75,
         BASE_RECYCLABLES_CAPACITY: 25,
     },
     EMPLOYEES: {

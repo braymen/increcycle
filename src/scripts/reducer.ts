@@ -210,7 +210,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
             let newAchievements: AchievementKey[] = []
             const newMoney = Math.round(Math.max(0, state.money + payload.amount) * 100) / 100
             if (!hasUnlock('Money', state)) newUnlocks = [...newUnlocks, 'Money']
-            if (!hasUnlock('Trashmart', state) && newMoney >= 10) newUnlocks = [...newUnlocks, 'Trashmart']
+            if (!hasUnlock('Shop', state) && newMoney >= 10) newUnlocks = [...newUnlocks, 'Shop']
             if (!hasUnlock('Organizer', state) && newMoney >= CONFIGS.UNLOCKS.ORGANIZER_LOGISTIC)
                 newUnlocks = [...newUnlocks, 'Organizer']
 

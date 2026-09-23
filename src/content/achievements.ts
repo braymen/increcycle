@@ -63,14 +63,14 @@ export const AchievementsJSON = [
         description: 'Reach 5 Truck Drivers',
         gridPrimaryName: 'TD',
         gridSecondaryName: 'I',
-        hiddenUntil: 'Trashmart',
+        hiddenUntil: 'Shop',
     },
     {
         name: 'Organizer I',
         description: 'Reach 5 Organizers',
         gridPrimaryName: 'OG',
         gridSecondaryName: 'I',
-        hiddenUntil: 'Trashmart',
+        hiddenUntil: 'Shop',
     },
 ] as const satisfies readonly Achievement[]
 

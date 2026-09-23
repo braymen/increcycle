@@ -31,7 +31,7 @@ const otherUnlocks = [
         name: 'Mass-Burn System',
     },
     {
-        name: 'Trashmart',
+        name: 'Shop',
     },
     {
         name: 'Experiments',

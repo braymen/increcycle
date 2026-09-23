@@ -6,7 +6,7 @@ import { getLevel } from '../../content/levels'
 import { hasUnlock } from '../../content/unlocks'
 import { CONFIGS } from '../../scripts/configs'
 
-function Trashmart() {
+function Shop() {
     const state = useGameState()
     const derived = useGameDerived()
     const dispatch = useGameDispatch()
@@ -127,4 +127,4 @@ function Trashmart() {
     )
 }
 
-export default Trashmart
+export default Shop
