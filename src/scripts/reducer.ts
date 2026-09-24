@@ -5,7 +5,7 @@ import { hasUnlock, UnlocksJSON, type UnlockKey } from '../content/unlocks'
 import { calculateDerived } from './formula'
 import type { ProgressActionKey } from '../ui/components/ProgressActionButton'
 import { hasAchievement, type AchievementKey } from '../content/achievements'
-import { StoryJSON, type StoryKey } from '../content/story'
+import { Journal, type JournalKey } from '../content/journal'
 
 // Setting up Game State
 export interface GameState {
@@ -32,7 +32,7 @@ export interface GameState {
     trackers: {
         oceanGarbage: number
     }
-    story: StoryKey[]
+    journal: JournalKey[]
 }
 
 export const initialState = (): GameState => {
@@ -53,7 +53,7 @@ export const initialState = (): GameState => {
         trackers: {
             oceanGarbage: 0,
         },
-        story: [],
+        journal: [],
     }
 }
 
@@ -147,13 +147,13 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 newUnlocks.push('Dump Garbage')
             }
 
-            // Story Checks
-            const currentStoryIndex = state.story.length
-            let newStory: StoryKey[] = []
-            if (currentStoryIndex + 1 <= StoryJSON.length) {
-                const unlockNextStoryEntry = StoryJSON[currentStoryIndex].checkTrigger(state)
-                if (unlockNextStoryEntry) {
-                    newStory.push(StoryJSON[currentStoryIndex].name as StoryKey)
+            // Journal Checks
+            const currentJournalIndex = state.journal.length
+            let newJournal: JournalKey[] = []
+            if (currentJournalIndex + 1 <= Journal.length) {
+                const unlockNextJournalEntry = Journal[currentJournalIndex].checks.trigger(state)
+                if (unlockNextJournalEntry) {
+                    newJournal.push(Journal[currentJournalIndex].name as JournalKey)
                 }
             }
 
@@ -173,7 +173,7 @@ export const reducer = (state: GameState, action: GameActions): GameState => {
                 money: newMoney,
                 resources: [...newResources],
                 unlocks: [...state.unlocks, ...newUnlocks],
-                story: [...state.story, ...newStory],
+                journal: [...state.journal, ...newJournal],
                 achievements: [...state.achievements, ...newAchievements],
                 lastTick,
             }

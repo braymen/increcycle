@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { findStory } from '../../content/story'
+import { findJournal } from '../../content/journal'
 import Panel from '../components/Panel'
 import { useGameState } from '../state/GameContext'
 
 const FADE_STEPS = 5
 const MIN_OPACITY = 0.4
 
-function Log() {
+function Journal() {
     const state = useGameState()
     const journalRef = useRef<HTMLDivElement>(null)
     const hasScrolled = useRef(false)
@@ -16,7 +16,7 @@ function Log() {
         if (!element) return
         element.scrollTo({ top: element.scrollHeight, behavior: hasScrolled.current ? 'smooth' : 'auto' })
         hasScrolled.current = true
-    }, [state.story.length])
+    }, [state.journal.length])
 
     return (
         <Panel title="Personal Journal">
@@ -30,10 +30,10 @@ function Log() {
                     scrollbarColor: 'var(--button-color) var(--bg-2)',
                 }}
             >
-                {state.story.map((u, index) => {
-                    const uData = findStory(u, state)
+                {state.journal.map((u, index) => {
+                    const uData = findJournal(u)
                     if (!uData) return
-                    const age = Math.min(state.story.length - 1 - index, FADE_STEPS)
+                    const age = Math.min(state.journal.length - 1 - index, FADE_STEPS)
                     const opacity = 1 - (age * (1 - MIN_OPACITY)) / FADE_STEPS
                     return (
                         <div key={u + index} className="fade-in" style={{ fontSize: '14px' }}>
@@ -49,4 +49,4 @@ function Log() {
     )
 }
 
-export default Log
+export default Journal

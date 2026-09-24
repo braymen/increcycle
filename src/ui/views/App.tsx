@@ -25,7 +25,7 @@ import Money from './Money'
 import Policies from './Policies'
 import { useGameState } from '../state/GameContext'
 import { hasUnlock } from '../../content/unlocks'
-import Log from './Log'
+import Journal from './Journal'
 
 function App() {
     const state = useGameState()
@@ -59,7 +59,7 @@ function App() {
             market: hasUnlock('Market', state),
             policies: hasUnlock('Policies', state),
             achievments: hasUnlock('Achievements', state),
-            log: hasUnlock('Log', state),
+            journal: hasUnlock('Journal', state),
         }
         // oxlint-disable-next-line react-hooks/exhaustive-deps
     }, [state.unlocks])
@@ -84,7 +84,7 @@ function App() {
                             {unlocks.massburnsystem && <MassBurnSystem />}
                         </div>
                         <div className="column">
-                            {unlocks.log && <Log />}
+                            {unlocks.journal && <Journal />}
                             {unlocks.shop && <Shop />}
                             {unlocks.experiments && <Experiments />}
                             {unlocks.market && <Market />}

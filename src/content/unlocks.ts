@@ -64,7 +64,7 @@ const otherUnlocks = [
         name: 'Sell Sam Recyclables',
     },
     {
-        name: 'Log',
+        name: 'Journal',
     },
 ] as const satisfies readonly Unlock[]
 
