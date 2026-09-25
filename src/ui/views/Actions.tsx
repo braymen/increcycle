@@ -30,11 +30,11 @@ function Actions() {
                         text="Steal Garbage From House"
                         icon={stealTrashIcon}
                         callback={() => {
-                            if (!hasUnlock('Log', state) && getResource('Unsorted Waste', state) >= 4) {
+                            if (!hasUnlock('Journal', state) && getResource('Unsorted Waste', state) >= 4) {
                                 dispatch({
                                     type: 'UNLOCK',
                                     payload: {
-                                        key: 'Log',
+                                        key: 'Journal',
                                     },
                                 })
                             }
