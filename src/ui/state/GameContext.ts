@@ -1,5 +1,6 @@
 import { createContext, useContext, type Dispatch } from 'react'
-import type { GameActions, GameState } from '../../scripts/reducer'
+import type { GameActions } from '../../scripts/reducer'
+import type { GameState } from '../../scripts/state'
 import type { GameDerived } from '../../scripts/formula'
 
 export const GameStateContext = createContext<GameState | null>(null)

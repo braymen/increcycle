@@ -1,4 +1,4 @@
-import type { GameState } from '../scripts/reducer'
+import type { GameState } from '../scripts/state'
 
 interface Level {
     name: string

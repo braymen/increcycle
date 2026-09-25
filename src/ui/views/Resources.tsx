@@ -5,7 +5,7 @@ import Panel from '../components/Panel'
 import ResourceLine from '../components/ResourceLine'
 import { useGameState } from '../state/GameContext'
 import { hasUnlock } from '../../content/unlocks'
-import type { GameState } from '../../scripts/reducer'
+import type { GameState } from '../../scripts/state'
 
 interface LooseObject {
     [key: string]: any
@@ -15,7 +15,7 @@ function Resources() {
     const state = useGameState()
     const unlocks = useMemo(() => {
         const u: LooseObject = {}
-        const resourceNames = ResourcesJSON.map((r) => r.name)
+        const resourceNames = ResourcesJSON.map((r) => r.id)
         for (let i = 0; i < resourceNames.length; i++) {
             u[resourceNames[i]] = hasUnlock(resourceNames[i], state)
         }
@@ -27,7 +27,7 @@ function Resources() {
         const build: LooseObject = {}
         for (let i = 0; i < ResourcesJSON.length; i++) {
             const resource = ResourcesJSON[i]
-            build[resource.name] = getResource(resource.name, state)
+            build[resource.id] = getResource(resource.id, state)
         }
         return build
     }
@@ -35,7 +35,7 @@ function Resources() {
         const build: LooseObject = {}
         for (let i = 0; i < ResourcesJSON.length; i++) {
             const resource = ResourcesJSON[i]
-            build[resource.name] = current[resource.name] - prev[resource.name]
+            build[resource.id] = current[resource.id] - prev[resource.id]
         }
         return build
     }
@@ -55,14 +55,14 @@ function Resources() {
     return (
         <Panel title="Resources laying around">
             {ResourcesJSON.map((r) => {
-                const playerResource = getResource(r.name, state)
-                if (!unlocks[r.name]) return
+                const playerResource = getResource(r.id, state)
+                if (!unlocks[r.id]) return
                 return (
                     <ResourceLine
-                        key={'resourceline-' + r.name}
-                        primaryText={r.name}
+                        key={'resourceline-' + r.id}
+                        primaryText={r.id}
                         amount={playerResource}
-                        ratePerSecond={resourceRates[r.name]}
+                        ratePerSecond={resourceRates[r.id]}
                         helperText={(r as Resource).description}
                     />
                 )

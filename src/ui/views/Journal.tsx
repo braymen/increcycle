@@ -3,9 +3,6 @@ import { findJournal } from '../../content/journal'
 import Panel from '../components/Panel'
 import { useGameState } from '../state/GameContext'
 
-const FADE_STEPS = 5
-const MIN_OPACITY = 0.4
-
 function Journal() {
     const state = useGameState()
     const journalRef = useRef<HTMLDivElement>(null)

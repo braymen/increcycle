@@ -3,7 +3,6 @@ import Panel from '../components/Panel'
 import { useGameDerived, useGameDispatch, useGameState } from '../state/GameContext'
 import { getAssigned, getLevel } from '../../content/levels'
 import { hasUnlock } from '../../content/unlocks'
-import { CONFIGS } from '../../scripts/configs'
 
 function Logistics() {
     const state = useGameState()
@@ -33,14 +32,18 @@ function Logistics() {
                             Employee Costs{' '}
                             <span
                                 className="help-marker"
-                                data-tooltip={`Employees are not free... Each working employee costs $${CONFIGS.EMPLOYEES.BASE_EMPLOYEE_PAY.toFixed(2)} a second. If you run out of money, they stop.`}
+                                data-tooltip={`Employees are not free... Each working employee costs $${derived.employeeCost.toFixed(2)} a second. If you run out of money, they stop.`}
                                 data-tooltip-align=""
                             >
                                 (?)
                             </span>
+                            <span style={{ float: 'right', marginRight: '12px' }}>
+                                {derived.workingEmployees} /{' '}
+                                {getAssigned('Truck Driver', state) + getAssigned('Organizer', state)} Working
+                            </span>
                         </div>
                         <div className="level-line-button" style={{ color: '#dc9b9b' }}>
-                            -${derived.employeeCosts.toFixed(2)}/s
+                            -${derived.allEmployeeCosts.toFixed(2)}/s
                         </div>
                     </div>
                 )}

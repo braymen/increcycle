@@ -1,76 +1,75 @@
-import type { GameState } from '../scripts/reducer'
+import type { GameState } from '../scripts/state'
 import { ResourcesJSON } from './resources'
 import type { Resource, ResourceKey } from './resources'
 
 interface Unlock {
-    name: string
-    description?: string
+    id: string
 }
 
 const resourceUnlocks: Unlock[] = ResourcesJSON.map((r: Resource) => {
-    return { name: r.name, logText: r.logText }
+    return { id: r.id }
 })
 
 const otherUnlocks = [
     {
-        name: 'Money',
+        id: 'Money',
     },
     {
-        name: 'Resources',
+        id: 'Resources',
     },
     {
-        name: 'Capacities',
+        id: 'Capacities',
     },
     {
-        name: 'Sorting',
+        id: 'Sorting',
     },
     {
-        name: 'Logistics',
+        id: 'Logistics',
     },
     {
-        name: 'Mass-Burn System',
+        id: 'Mass-Burn System',
     },
     {
-        name: 'Shop',
+        id: 'Shop',
     },
     {
-        name: 'Experiments',
+        id: 'Experiments',
     },
     {
-        name: 'Market',
+        id: 'Market',
     },
     {
-        name: 'Policies',
+        id: 'Policies',
     },
     {
-        name: 'Achievements',
+        id: 'Achievements',
     },
     {
-        name: 'Sort Garbage',
+        id: 'Sort Garbage',
     },
     {
-        name: 'Organizer',
+        id: 'Organizer',
     },
     {
-        name: 'Employee Costs',
+        id: 'Employee Costs',
     },
     {
-        name: 'Dump Garbage',
+        id: 'Dump Garbage',
     },
     {
-        name: 'Capacity Upgrades',
+        id: 'Capacity Upgrades',
     },
     {
-        name: 'Sell Sam Recyclables',
+        id: 'Sell Sam Recyclables',
     },
     {
-        name: 'Journal',
+        id: 'Journal',
     },
 ] as const satisfies readonly Unlock[]
 
 export const UnlocksJSON: readonly Unlock[] = [...resourceUnlocks, ...otherUnlocks]
 
-export type UnlockKey = ResourceKey | (typeof otherUnlocks)[number]['name']
+export type UnlockKey = ResourceKey | (typeof otherUnlocks)[number]['id']
 
 export const hasUnlock = (key: UnlockKey, state: GameState) => {
     return state.unlocks.includes(key)

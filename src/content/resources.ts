@@ -1,61 +1,59 @@
-import type { GameState } from '../scripts/reducer'
+import type { GameState } from '../scripts/state'
 
 export interface Resource {
-    name: string
+    id: string
     description?: string
-    logText?: string
 }
 
 export const ResourcesJSON = [
     {
-        name: 'Unsorted Waste',
+        id: 'Unsorted Waste',
         description: 'Municiple trash that needs organizing.',
-        logText: 'Test',
     },
     {
-        name: 'Garbage',
+        id: 'Garbage',
         description: 'Smelly nasty trash. Maybe you can do something with it one day...',
     },
     {
-        name: 'Recyclables',
+        id: 'Recyclables',
         description: 'Unsorted recyclables that you can sell and make another persons problem.',
     },
     {
-        name: 'Paper',
+        id: 'Paper',
     },
     {
-        name: 'Glass',
+        id: 'Glass',
     },
     {
-        name: 'Metal',
+        id: 'Metal',
     },
     {
-        name: 'Plastic',
+        id: 'Plastic',
     },
     {
-        name: 'Wood',
+        id: 'Wood',
     },
     {
-        name: 'Biomass',
+        id: 'Biomass',
     },
     {
-        name: 'Ash',
+        id: 'Ash',
     },
     {
-        name: 'Clay',
+        id: 'Clay',
     },
     {
-        name: 'Cement',
+        id: 'Cement',
     },
     {
-        name: 'Power',
+        id: 'Power',
     },
 ] as const satisfies readonly Resource[]
 
-export type ResourceKey = (typeof ResourcesJSON)[number]['name']
+export type ResourceKey = (typeof ResourcesJSON)[number]['id']
 
 export const getResource = (key: ResourceKey, state: GameState) => {
-    return state.resources.find((r) => r.name === key)?.amount || 0
+    return state.resources.find((r) => r.id === key)?.amount || 0
 }
 
 export const RecyclableResourceKeys: ResourceKey[] = ['Recyclables', 'Paper', 'Glass', 'Metal', 'Plastic', 'Wood']

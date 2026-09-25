@@ -1,5 +1,5 @@
 import { calculateDerived } from '../scripts/formula'
-import type { GameState } from '../scripts/reducer'
+import type { GameState } from '../scripts/state'
 import { getLevel } from './levels'
 import { getResource } from './resources'
 
